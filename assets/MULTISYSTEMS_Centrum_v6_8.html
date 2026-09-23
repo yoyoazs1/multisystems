@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MULTISYSTEMS Centrum</title>
+<style>
+:root{--bg:#0d1218;--panel:#171e27;--panel2:#0e151d;--line:#303b48;--text:#f3f5f7;--muted:#9ba6b2;--gold:#b88908;--gold2:#e0b65f;--red:#793333;--green:#26734b;--header:#090d12;--side:#101720;--menuText:#eee;--input:#0e151d;--buttonText:#fff;--menuActive:#242d38;--menuActiveText:#f1c55e}
+html[data-theme="light"]{--bg:#f4f6f8;--panel:#fff;--panel2:#f7f8fa;--line:#d7dce2;--text:#18202a;--muted:#66717d;--gold:#9a7000;--gold2:#9a7000;--red:#b64b4b;--green:#26734b;--header:#fff;--side:#fff;--menuText:#26313d;--input:#fff;--buttonText:#18202a;--menuActive:#eee6cf;--menuActiveText:#795900}
+@media(prefers-color-scheme:light){html[data-theme="system"]{--bg:#f4f6f8;--panel:#fff;--panel2:#f7f8fa;--line:#d7dce2;--text:#18202a;--muted:#66717d;--gold:#9a7000;--gold2:#9a7000;--red:#b64b4b;--green:#26734b;--header:#fff;--side:#fff;--menuText:#26313d;--input:#fff;--buttonText:#18202a;--menuActive:#eee6cf;--menuActiveText:#795900}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{height:64px;background:var(--header);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 14px;position:sticky;top:0;z-index:20}
+.hamb{font-size:25px;background:none;color:var(--text);padding:8px 12px}.brand{font-weight:850;color:var(--gold2);font-size:20px;margin-left:6px}.headtitle{margin-left:12px;color:var(--muted)}
+aside{position:fixed;z-index:30;left:-290px;top:0;width:280px;height:100vh;background:var(--side);border-right:1px solid var(--line);transition:.22s;padding:15px;overflow:auto}
+aside.open{left:0}.shade{display:none;position:fixed;inset:0;background:#0009;z-index:25}.shade.on{display:block}.logo{font-size:22px;font-weight:850;color:var(--gold2);padding:8px 8px 18px}
+.menu button{display:block;width:100%;text-align:left;margin:4px 0;background:transparent;color:var(--menuText);border:0;border-radius:9px;padding:12px}.menu button:hover,.menu button.on{background:var(--menuActive);color:var(--menuActiveText)}.menu .sep{border-top:1px solid var(--line);margin:10px 0}
+main{max-width:1180px;margin:auto;padding:15px}.view{display:none}.view.on{display:block}.card{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;margin-bottom:14px}
+h2{margin:3px 0 16px}h3{margin:2px 0 12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.kpi b{display:block;font-size:25px;color:var(--gold2);margin-top:5px}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.wide{grid-column:1/-1}.field label{display:block;font-size:12px;color:#c7cfd7;font-weight:700;margin:0 0 5px 2px}
+input,select,textarea{width:100%;background:var(--panel2);border:1px solid var(--line);color:#fff;border-radius:9px;padding:10px;font:inherit;min-height:43px}textarea{min-height:80px}
+button,.button{border:0;border-radius:9px;padding:10px 13px;background:var(--gold);color:#fff;font-weight:750;cursor:pointer}.secondary{background:#28323e}.danger{background:var(--red)}.green{background:var(--green)}
+.toolbar,.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:13px}
+table{width:100%;border-collapse:collapse;min-width:850px}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.muted{color:var(--muted)}.badge{display:inline-block;padding:3px 8px;border-radius:999px;background:#28323e}
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:9px;margin-top:9px}.photo{position:relative;background:#0b1016;border:1px solid var(--line);border-radius:10px;padding:6px}.photo img{width:100%;height:105px;object-fit:cover;border-radius:7px}.photo button{position:absolute;right:8px;top:8px;padding:4px 7px;background:#000b}
+.camera{border:1px dashed #566270;padding:10px;border-radius:10px}.camera input[type=file]{padding:6px}.calc{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.money{font-size:19px;font-weight:800;color:var(--gold2)}
+.calendar-item{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+iframe{width:100%;height:calc(100vh - 95px);border:0;border-radius:12px;background:#fff}
+dialog{width:min(760px,96vw);max-height:92vh;overflow:auto;background:var(--panel);color:#fff;border:1px solid var(--line);border-radius:15px;padding:18px}dialog::backdrop{background:#000b}
+@media(max-width:720px){.headtitle{display:none}main{padding:11px}.grid{grid-template-columns:repeat(2,1fr)}.form,.calc{grid-template-columns:1fr}.wide{grid-column:auto}.tablewrap{border:0;overflow:visible}table{min-width:0}thead{display:none}tbody,tr,td{display:block;width:100%}tr{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:9px;padding:9px}td{border:0;padding:5px 6px}td:before{content:attr(data-label);display:block;color:var(--muted);font-size:11px;font-weight:700}.calendar-item{grid-template-columns:1fr}iframe{height:calc(100vh - 85px)}}
+
+#finance table th,#finance table td{vertical-align:top;white-space:nowrap}
+#finance .tablewrap{overflow-x:auto}
+#devices table th,#devices table td{vertical-align:top}
+@media(max-width:700px){#finance table td,#finance table th{white-space:normal}}
+
+html[data-theme="light"] input,html[data-theme="light"] select,html[data-theme="light"] textarea,
+html[data-theme="light"] dialog{background:#fff!important;color:#18202a!important;border-color:#cbd2d9!important}
+html[data-theme="light"] table{color:#18202a}
+html[data-theme="light"] th{background:#edf0f3!important;color:#18202a!important}
+html[data-theme="light"] td{background:#fff;color:#18202a}
+html[data-theme="light"] .secondary{color:#18202a}
+html[data-theme="light"] .shade{background:#0005}
+
+/* v5.5 — czytelność formularzy w jasnym/systemowym motywie */
+html[data-theme="light"] input,
+html[data-theme="light"] select,
+html[data-theme="light"] textarea,
+html[data-theme="light"] option{
+  background:#ffffff!important;
+  color:#18202a!important;
+  -webkit-text-fill-color:#18202a!important;
+  opacity:1!important;
+}
+html[data-theme="light"] label{color:#4f5b66!important}
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder{
+  color:#7a858f!important;
+  -webkit-text-fill-color:#7a858f!important;
+  opacity:1!important;
+}
+@media(prefers-color-scheme:light){
+  html[data-theme="system"] input,
+  html[data-theme="system"] select,
+  html[data-theme="system"] textarea,
+  html[data-theme="system"] option{
+    background:#ffffff!important;
+    color:#18202a!important;
+    -webkit-text-fill-color:#18202a!important;
+    opacity:1!important;
+  }
+  html[data-theme="system"] label{color:#4f5b66!important}
+  html[data-theme="system"] input::placeholder,
+  html[data-theme="system"] textarea::placeholder{
+    color:#7a858f!important;
+    -webkit-text-fill-color:#7a858f!important;
+    opacity:1!important;
+  }
+}
+
+
+/* v5.8 — mobilny formularz protokołu */
+.protocol-checks{display:grid;gap:8px;margin-top:12px}
+.protocol-check{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--panel2)}
+.protocol-label{font-weight:650;line-height:1.25;min-width:0}
+.protocol-choice{display:flex;gap:8px;flex:0 0 auto}
+.protocol-choice label{display:flex;align-items:center;gap:5px;margin:0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-weight:700;color:var(--text)!important}
+.protocol-choice input[type="checkbox"]{width:22px!important;height:22px!important;margin:0!important;min-height:0!important;accent-color:var(--gold)}
+.protocol-choice label:has(input:checked){background:var(--menuActive);color:var(--menuActiveText)!important;border-color:var(--gold)}
+@media(max-width:620px){
+ .protocol-check{display:block}
+ .protocol-choice{margin-top:8px}
+ .protocol-choice label{flex:1;justify-content:center}
+ #reviewProtocolFields .formgrid{grid-template-columns:1fr}
+}
+html[data-theme="light"] .protocol-choice label,
+html[data-theme="system"] .protocol-choice label{color:var(--text)!important}
+
+</style></head>
+<body><script>document.documentElement.dataset.theme=localStorage.getItem('multisystems_theme')||'system'</script>
+<header><button class="hamb" onclick="toggleMenu()">☰</button><div class="brand">MULTISYSTEMS</div><div class="headtitle" id="headTitle">Dashboard</div></header>
+<div class="shade" id="shade" onclick="toggleMenu(false)"></div>
+<aside id="side"><div class="logo">MULTISYSTEMS</div><div class="menu">
+<button class="on" data-view="dash">⌂ Dashboard</button>
+<button data-view="clients">👤 Klienci</button><button data-view="devices">❄ Urządzenia</button>
+<button data-view="jobs">🛠 Instalacje / Serwis</button><button data-view="reviews">✓ Przeglądy</button><button data-view="calendar">📅 Kalendarz</button>
+<div class="sep"></div><button data-view="offers">📄 Generator ofert</button><button data-view="quickquote">🧮 Szybka wycena</button><button data-view="finance">💰 Finanse</button>
+<div class="sep"></div><button data-view="settings">⚙ Ustawienia</button>
+</div></aside>
+<main>
+<section id="dash" class="view on"><h2>Dashboard</h2><div id="dbStatus" class="card muted">Uruchamianie lokalnej bazy…</div><div class="grid">
+<div class="card kpi"><span class="muted">Klienci</span><b id="kc">0</b></div><div class="card kpi"><span class="muted">Urządzenia</span><b id="kd">0</b></div>
+<div class="card kpi"><span class="muted">Otwarte zlecenia</span><b id="kj">0</b></div><div class="card kpi"><span class="muted">Przeglądy ≤ 30 dni</span><b id="kp">0</b></div></div>
+<div class="card"><h3>Najbliższe zaplanowane działania</h3><div id="dashCal"></div></div></section>
+
+<section id="clients" class="view"><h2>Klienci</h2><div class="card"><button onclick="editClient()">+ Dodaj klienta</button></div><div class="tablewrap"><table><thead><tr><th>Klient</th><th>Telefon</th><th>E-mail</th><th>Adres</th><th>Urządzenia</th><th>Akcje</th></tr></thead><tbody id="clientsRows"></tbody></table></div></section>
+
+<section id="devices" class="view"><h2 id="devicesTitle">Urządzenia</h2><div class="card"><div class="toolbar"><button onclick="editDevice()">+ Dodaj urządzenie</button><button id="clearDeviceFilter" class="secondary" style="display:none" onclick="clearClientDeviceFilter()">Pokaż wszystkie urządzenia</button></div></div><div class="tablewrap"><table><thead><tr><th>Urządzenie</th><th>Moc</th><th>Klient</th><th>S/N</th><th>Uruchomienie</th><th>Cykl</th><th>Następny przegląd</th><th>Zdjęcia</th><th>Akcje</th></tr></thead><tbody id="devicesRows"></tbody></table></div></section>
+
+<section id="jobs" class="view"><h2>Instalacje / Serwis</h2><div class="card"><button onclick="editJob()">+ Dodaj zlecenie</button></div><div class="tablewrap"><table><thead><tr><th>Data</th><th>Typ</th><th>Klient</th><th>Urządzenie</th><th>Status</th><th>Dochód / strata</th><th>Zdjęcia</th><th>Opis</th><th>Akcje</th></tr></thead><tbody id="jobsRows"></tbody></table></div></section>
+
+<section id="reviews" class="view"><h2>Przeglądy</h2>
+<div class="card"><h3>Historia wykonanych przeglądów</h3><div id="reviewHistoryRows"></div></div>
+</section>
+
+<section id="calendar" class="view"><h2>Kalendarz</h2>
+<div class="card"><h3>🔍 Zaplanowane przeglądy</h3><div id="calendarReviews"></div></div>
+<div class="card"><h3>🛠 Zaplanowane serwisy</h3><div id="calendarServices"></div></div>
+<div class="card"><h3>❄ Zaplanowane instalacje</h3><div id="calendarInstallations"></div></div>
+</section>
+
+<section id="offers" class="view"><h2>Generator ofert</h2><div class="card"><div class="muted" style="margin-bottom:8px">Oryginalny generator ofert MULTISYSTEMS jest osadzony w tym module.</div><iframe id="offerFrame"></iframe></div></section>
+
+<section id="quickquote" class="view"><h2>Szybka wycena</h2>
+<div class="card"><h3>Kalkulator opłacalności</h3>
+<p class="muted">Kalkulator działa według wcześniejszego schematu rozliczenia: VAT 8% lub 23%, składka zdrowotna 9% i PIT 12%. Koszt pomocnika jest odejmowany na końcu tak jak w dotychczasowym kalkulatorze.</p>
+<div class="formgrid">
+<div class="field"><label>Stawka VAT faktury</label><select id="qqVat" onchange="calcQuickQuote()"><option value="8">8%</option><option value="23">23%</option></select></div>
+<div class="field"><label>Podaj kwoty jako</label><select id="qqMode" onchange="calcQuickQuote()"><option value="gross">Brutto</option><option value="net">Netto</option></select></div>
+<div class="field wide"><label id="qqInvoiceLabel">Cena całej faktury brutto [zł]</label><input id="qqInvoice" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label id="qqAcLabel">Cena klimatyzatora brutto [zł]</label><input id="qqAc" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label id="qqMaterialsLabel">Materiały brutto [zł]</label><input id="qqMaterials" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label id="qqLaborLabel">Robocizna / inne koszty brutto [zł]</label><input id="qqLabor" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+<div class="field"><label>Pomocnik [zł]</label><input id="qqHelper" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0,00"></div>
+</div>
+<div class="actions"><button class="secondary" onclick="clearQuickQuote()">Wyczyść</button></div>
+</div>
+<div class="grid">
+<div class="card kpi"><span class="muted">Faktura brutto</span><b id="qqGross">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">Przychód netto</span><b id="qqRevenueNet">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">Koszty netto</span><b id="qqCostsNet">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">Dochód przed podatkami</span><b id="qqIncome">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">VAT do zapłaty</span><b id="qqVatDue">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">Składka zdrowotna 9%</span><b id="qqHealth">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">PIT do zapłaty</span><b id="qqPitDue">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">Pomocnik</span><b id="qqHelperOut">0,00 zł</b></div>
+<div class="card kpi"><span class="muted">Zostaje po rozliczeniu</span><b id="qqFinal">0,00 zł</b></div>
+</div>
+<div class="card"><h3>Szczegóły</h3><div class="tablewrap"><table><tbody>
+<tr><td>VAT należny z faktury</td><td id="qqVatSales">0,00 zł</td></tr>
+<tr><td>VAT naliczony w kosztach</td><td id="qqVatCosts">0,00 zł</td></tr>
+<tr><td>PIT 12% przed odliczeniem zdrowotnej</td><td id="qqPit">0,00 zł</td></tr>
+<tr><td>Łączne koszty brutto (klimatyzator + materiały + robocizna/inne)</td><td id="qqCostsGross">0,00 zł</td></tr>
+</tbody></table></div>
+<p class="muted">To kalkulacja pomocnicza według modelu używanego wcześniej w aplikacji/arkuszu. Nie jest pełnym kalkulatorem księgowym stałych składek ZUS.</p></div>
+</section>
+
+<section id="finance" class="view"><h2>Finanse</h2>
+<div class="card"><button onclick="editFinance()">+ Dodaj rozliczenie montażu</button></div>
+<div class="grid"><div class="card kpi"><span class="muted">Dochód z instalacji</span><b id="fInstallIncome">0 zł</b></div><div class="card kpi"><span class="muted">Dochód / strata — serwisy</span><b id="fServiceResult">0 zł</b></div><div class="card kpi"><span class="muted">Dochód / strata — przeglądy</span><b id="fReviewResult">0 zł</b></div><div class="card kpi"><span class="muted">Wynik całościowy</span><b id="fNet">0 zł</b></div></div>
+<div class="card"><div class="toolbar"><button onclick="generateFinancePDF()">📄 Raport PDF</button><button class="secondary" onclick="generateFinanceExcel()">📊 Raport Excel</button></div><div class="toolbar"><select id="financeYear" onchange="renderFinance()"></select><select id="financeMonth" onchange="renderFinance()"><option value="">Cały rok</option><option value="01">Styczeń</option><option value="02">Luty</option><option value="03">Marzec</option><option value="04">Kwiecień</option><option value="05">Maj</option><option value="06">Czerwiec</option><option value="07">Lipiec</option><option value="08">Sierpień</option><option value="09">Wrzesień</option><option value="10">Październik</option><option value="11">Listopad</option><option value="12">Grudzień</option></select></div></div>
+<div class="card"><h3>Wykonane instalacje, przeglądy i serwisy</h3><p class="muted">Tylko zadania ze statusem „Wykonane” są wliczane do Finansów. Zadania „Zaplanowane” i „Anulowane” nie wpływają na wynik.</p><div id="jobCostSummary"></div></div><div class="tablewrap"><table><thead><tr><th>Data</th><th>Klient</th><th>Urządzenie</th><th>Faktura brutto</th><th>Koszty brutto</th><th>Koszty pomocnika</th><th>Zarobek netto</th><th>VAT do zapłaty</th><th>Akcje</th></tr></thead><tbody id="financeRows"></tbody></table></div></section>
+
+<section id="settings" class="view"><h2>Ustawienia</h2>
+<div class="card"><h3>Wygląd</h3><label>Motyw aplikacji</label><select id="themeSelect" onchange="setTheme(this.value)"><option value="system">Systemowy</option><option value="dark">Ciemny</option><option value="light">Jasny</option></select><p class="muted">Motyw systemowy automatycznie dopasowuje aplikację do ustawień telefonu.</p></div>
+
+<div class="card"><h3>Dane firmy</h3><div class="formgrid">
+<div class="field"><label>Nazwa firmy</label><input id="setCompanyName"></div><div class="field"><label>NIP</label><input id="setCompanyNip"></div>
+<div class="field"><label>Telefon</label><input id="setCompanyPhone"></div><div class="field"><label>E-mail</label><input id="setCompanyEmail"></div>
+<div class="field wide"><label>Adres</label><input id="setCompanyAddress"></div></div>
+<div class="actions"><button onclick="saveAppSettings()">Zapisz dane firmy</button></div></div>
+
+<div class="card"><h3>Domyślne ustawienia</h3><div class="formgrid">
+<div class="field"><label>Domyślna stawka VAT</label><select id="setVat"><option value="8">8%</option><option value="23">23%</option><option value="0">0% / bez faktury</option></select></div>
+<div class="field"><label>Cykl przeglądów</label><select id="setInterval"><option value="12">12 miesięcy</option><option value="6">6 miesięcy</option><option value="3">3 miesiące</option></select></div>
+<div class="field"><label>Godzina rozpoczęcia zadania</label><input id="setStartTime" type="time"></div>
+<div class="field"><label>Czas zadania</label><select id="setDuration"><option value="60">1 godzina</option><option value="90">1,5 godziny</option><option value="120">2 godziny</option><option value="180">3 godziny</option><option value="240">4 godziny</option></select></div>
+</div><div class="actions"><button onclick="saveAppSettings()">Zapisz ustawienia</button></div></div>
+
+<div class="card"><h3>SMS do klienta</h3><p class="muted">Przycisk SMS otwiera aplikację Wiadomości w telefonie z numerem klienta i gotową treścią. Wysłanie wiadomości zatwierdzasz w telefonie.</p>
+<label>Szablon przypomnienia</label><textarea id="setSmsTemplate" rows="5"></textarea>
+<p class="muted">Możesz użyć: {klient}, {data}, {typ}, {urzadzenie}, {firma}, {telefon}</p>
+<div class="actions"><button onclick="saveAppSettings()">Zapisz szablon SMS</button></div></div>
+
+<div class="card"><h3>Powiadomienia o przeglądach</h3><label>Wyprzedzenie</label><select id="setReminderDays"><option value="7">7 dni</option><option value="14">14 dni</option><option value="30">30 dni</option><option value="60">60 dni</option></select><p class="muted">Ustawienie określa, z jakim wyprzedzeniem przeglądy mają być wyróżniane w aplikacji.</p><div class="actions"><button onclick="saveAppSettings()">Zapisz</button></div></div>
+
+
+
+<div class="card"><h3>Backup / kopia bezpieczeństwa</h3>
+<p class="muted">W tym miejscu możesz eksportować i importować dane oraz skonfigurować zapis do chmury.</p>
+<div class="actions"><button onclick="exportDB()">Eksportuj JSON</button><label class="button secondary">Importuj JSON<input hidden type="file" accept=".json" onchange="importDB(this.files[0]);this.value=''"></label></div>
+</div>
+<div class="card"><h3>Google Drive / OneDrive</h3>
+<label>Google OAuth Client ID</label><input id="googleClientId" placeholder="...apps.googleusercontent.com">
+<label>Microsoft Entra Client ID</label><input id="msClientId" placeholder="Client ID">
+<label>Microsoft Redirect URI</label><input id="msRedirectUri" placeholder="https://twoja-domena.pl/">
+<div class="actions"><button onclick="saveCloudSettings()">Zapisz ustawienia integracji</button><button class="secondary" onclick="cloudBackupInfo('Google Drive')">Google Drive</button><button class="secondary" onclick="cloudBackupInfo('OneDrive')">OneDrive</button></div>
+<p class="muted">Pełna synchronizacja OAuth wymaga uruchomienia aplikacji przez HTTPS/PWA.</p>
+</div>
+<div class="card"><h3>Czyszczenie danych aplikacji</h3>
+<p class="muted">Usuwa wszystkich klientów, urządzenia, zlecenia, historię i dane finansowe zapisane lokalnie. Ustawienia firmy i wyglądu pozostają bez zmian.</p>
+<div class="actions"><button class="danger" type="button" onclick="clearEntireDatabase()">🗑 Wyczyść dane aplikacji</button></div>
+</div>
+<div class="card"><h3>Dane aplikacji</h3>
+<p><b>Przenośna kopia HTML</b> zawiera aplikację razem z aktualną bazą. Możesz zachować taki plik jako dodatkowy backup.</p>
+<div class="actions"><button onclick="exportPortableHTML()">💾 Zapisz aplikację z bazą do HTML</button><label class="button secondary">📥 Wczytaj bazę z HTML<input hidden type="f"importDB(this.files[0])"></label></div><p class="muted">Zdjęcia są częścią backupu, dlatego plik może być duży.</p></div>
+<p class="muted">Jeżeli aplikacja jest otwierana z telefonu jako plik content:// lub file://, logowanie OAuth nie zadziała. Do prawdziwej synchronizacji trzeba uruchomić aplikację jako stronę HTTPS/PWA.</p></div></section>
+</main>
+
+<dialog id="reviewPreviewDlg"><div style="min-width:min(520px,90vw)"><h3>Podgląd przeglądu</h3><div id="reviewPreviewBody" class="card"></div><div class="actions"><button id="reviewPreviewSms" type="button" class="secondary">💬 SMS</button><button id="reviewPreviewCreate" type="button">Utwórz przegląd</button><button type="button" class="secondary" onclick="reviewPreviewDlg.close()">Zamknij</button></div></div></dialog>
+<dialog id="clientDlg"><form id="clientForm"><input type="hidden" name="id"><h3 id="clientHead">Klient</h3><div class="form">
+<div class="field"><label>Nazwa / imię i nazwisko</label><input name="name" required></div><div class="field"><label>Telefon</label><input name="phone"></div>
+<div class="field"><label>E-mail</label><input name="email"></div><div class="field"><label>Miasto</label><input name="city"></div><div class="field wide"><label>Adres instalacji</label><input name="address"></div><div class="field wide"><label>Uwagi</label><textarea name="notes"></textarea></div></div><div class="actions"><button>Zapisz</button><button type="button" class="secondary" onclick="clientDlg.close()">Anuluj</button></div></form></dialog>
+
+<dialog id="deviceDlg"><form id="deviceForm"><input type="hidden" name="id"><h3 id="deviceHead">Urządzenie</h3><div class="form">
+<div class="field"><label>Klient</label><select name="clientId" required></select></div><div class="field"><label>Producent</label><input name="brand"></div><div class="field"><label>Moc urządzenia [kW]</label><input name="powerKw" type="number" step="0.1" min="0" placeholder="np. 3.5"></div>
+<div class="field"><label>Model jednostki wewnętrznej</label><input name="modelIn"></div><div class="field"><label>Numer seryjny jednostki wewnętrznej</label><input name="serialIn"></div>
+<div class="field wide camera"><label>📷 Tabliczka jednostki wewnętrznej</label><input id="camIn" type="file" accept="image/*" capture="environment"><div class="actions"><label class="button secondary">🖼 Wybierz zdjęcie z telefonu<input id="galleryIn" hidden type="file" accept="image/*"></label><button type="button" class="secondary" onclick="tryOCR('in')">Odczytaj ze zdjęcia</button></div><div id="photoIn" class="photo-grid"></div></div>
+<div class="field"><label>Model jednostki zewnętrznej</label><input name="modelOut"></div><div class="field"><label>Numer seryjny jednostki zewnętrznej</label><input name="serialOut"></div>
+<div class="field wide camera"><label>📷 Tabliczka jednostki zewnętrznej</label><input id="camOut" type="file" accept="image/*" capture="environment"><div class="actions"><label class="button secondary">🖼 Wybierz zdjęcie z telefonu<input id="galleryOut" hidden type="file" accept="image/*"></label><button type="button" class="secondary" onclick="tryOCR('out')">Odczytaj ze zdjęcia</button></div><div id="photoOut" class="photo-grid"></div></div>
+<div class="field"><label>Data uruchomienia instalacji</label><input name="startDate" type="date" required onchange="previewNext()"></div><div class="field"><label>Częstotliwość przeglądów</label><select name="intervalMonths" onchange="previewNext()"><option value="12">Co 12 miesięcy</option><option value="6">Co 6 miesięcy</option><option value="3">Co 3 miesiące</option></select></div>
+<div class="field wide"><label>Następny przegląd — automatycznie</label><input name="nextService" type="date" readonly></div><div class="field wide"><label>Uwagi / lokalizacja</label><textarea name="notes"></textarea></div>
+</div><div class="actions"><button>Zapisz</button><button type="button" class="secondary" onclick="deviceDlg.close()">Anuluj</button></div></form></dialog>
+
+<dialog id="jobDlg"><form id="jobForm"><input type="hidden" name="id"><h3 id="jobHead">Zlecenie</h3><div class="form">
+<div class="field"><label>Typ</label><select name="type"><option>Instalacja</option><option>Przegląd</option><option>Serwis</option></select></div><div class="field"><label>Status</label><select name="status"><option>Zaplanowane</option><option>Wykonane</option><option>Do kontaktu</option><option>Anulowane</option></select></div>
+<div class="field"><label>Data</label><input name="date" type="date" required></div><div class="field"><label>Klient</label><select name="clientId" required onchange="fillJobDevices()"></select></div><div class="field wide"><label>Urządzenie</label><select name="deviceId"></select></div>
+<div class="field wide"><label>Opis / diagnoza / wykonane czynności</label><textarea name="description"></textarea></div>
+<div class="field wide" id="reviewProtocolFields"><div class="card" style="margin-top:10px"><h3>📄 Protokół przeglądu okresowego</h3>
+<p class="muted">Dane klienta, urządzenia, firmy i data są pobierane automatycznie. Uzupełnij pomiary i zaznacz wykonane czynności.</p>
+<div class="formgrid">
+<div><label>Długość instalacji freonowej [m]</label><input name="rpFreonLength" type="number" step=".1"></div>
+<div><label>Różnica poziomów skraplacz–parownik [m]</label><input name="rpLevelDiff" type="number" step=".1"></div>
+<div><label>Napięcie zasilające [V]</label><input name="rpVoltage" type="number" step=".1"></div>
+<div><label>Pomieszczenie klimatyzowane [m²]</label><input name="rpRoomArea" type="number" step=".1"></div>
+<div><label>Numer certyfikatu F-GAZ</label><input name="rpFgas"></div>
+<div><label>Pomiar ΔT powietrza [°C]</label><input name="rpDeltaT" type="number" step=".1"></div>
+</div>
+<div class="protocol-checks">
+<div class="protocol-check"><div class="protocol-label">Czyszczenie filtra siatkowego powietrza</div><div class="protocol-choice"><label><input type="checkbox" name="rpFilter" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Umycie wymiennika ciepła w jednostce zewnętrznej</div><div class="protocol-choice"><label><input type="checkbox" name="rpOutdoorExchanger" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Sprawdzenie szczelności instalacji</div><div class="protocol-choice"><label><input type="checkbox" name="rpTightness" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Dokręcenie połączeń elektrycznych</div><div class="protocol-choice"><label><input type="checkbox" name="rpElectrical" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Sprawdzenie drożności odprowadzenia skroplin</div><div class="protocol-choice"><label><input type="checkbox" name="rpDrain" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Sprawdzenie działania pompek skroplin</div><div class="protocol-choice"><label><input type="checkbox" name="rpPump" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Kontrola izolacji termicznej rurociągów</div><div class="protocol-choice"><label><input type="checkbox" name="rpInsulation" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Test zabezpieczenia różnicowo-prądowego</div><div class="protocol-choice"><label><input type="checkbox" name="rpRcd" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Tryb testowy chłodzenie: ΔT > 8°C</div><div class="protocol-choice"><label><input type="checkbox" name="rpCoolTest" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Tryb testowy grzanie: ΔT > 14°C</div><div class="protocol-choice"><label><input type="checkbox" name="rpHeatTest" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Odgrzybianie i dezynfekcja wymiennika wewnętrznego</div><div class="protocol-choice"><label><input type="checkbox" name="rpDisinfection" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Umycie wymiennika w jednostce wewnętrznej</div><div class="protocol-choice"><label><input type="checkbox" name="rpIndoorExchanger" value="TAK"> Wykonano ✓</label></div></div>
+<div class="protocol-check"><div class="protocol-label">Sprawdzenie podkładek wibroizolacyjnych jednostki zewnętrznej</div><div class="protocol-choice"><label><input type="checkbox" name="rpVibration" value="TAK"> Wykonano ✓</label></div></div>
+</div>
+<div class="field wide"><label>Uwagi do protokołu</label><textarea name="rpNotes"></textarea></div>
+</div></div>
+<div class="field"><div class="card" style="margin-top:10px"><h3>Rozliczenie zadania</h3>
+<div class="formgrid">
+<div><label>Rozliczenie</label><select name="invoiceMode" id="invoiceMode"><option value="8">Faktura VAT 8%</option><option value="23">Faktura VAT 23%</option><option value="0">Bez faktury / VAT 0%</option></select></div>
+<div><label>Wprowadzane kwoty</label><select name="amountMode" id="amountMode"><option value="gross">Brutto</option><option value="net">Netto</option></select></div>
+<div><label id="jobRevenueLabel">Faktura / przychód brutto [zł]</label><input name="jobRevenue" id="jobRevenue" type="number" step=".01" min="0" placeholder="0"></div>
+<div><label id="jobCostsLabel">Koszty brutto [zł]</label><input name="jobCosts" id="jobCosts" type="number" step=".01" min="0" placeholder="0"></div>
+<div><label>Koszty pomocnika [zł]</label><input name="jobHelper" id="jobHelper" type="number" step=".01" min="0" placeholder="0"></div>
+</div>
+<div class="tablewrap" style="margin-top:10px"><table><tbody>
+<tr><td>Przychód netto</td><td id="jcRevenueNet">0,00 zł</td></tr>
+<tr><td>Koszty netto</td><td id="jcCostsNet">0,00 zł</td></tr>
+<tr><td>Dochód przed podatkami</td><td id="jcIncome">0,00 zł</td></tr>
+<tr><td>Składka zdrowotna (9%)</td><td id="jcHealth">0,00 zł</td></tr>
+<tr><td>Podatek PIT (12%)</td><td id="jcPit">0,00 zł</td></tr>
+<tr><td>Podatek PIT do zapłaty</td><td id="jcPitDue">0,00 zł</td></tr>
+<tr><td>Zarobek netto po podatkach</td><td id="jcNet">0,00 zł</td></tr>
+<tr><td>VAT należny (sprzedaż)</td><td id="jcVatSales">0,00 zł</td></tr>
+<tr><td>VAT naliczony (koszty)</td><td id="jcVatCosts">0,00 zł</td></tr>
+<tr><td>VAT do zapłaty do urzędu</td><td id="jcVatDue">0,00 zł</td></tr>
+<tr><td><b>Dochód / strata po kosztach pomocnika</b></td><td><input name="profitLoss" id="jobProfitLoss" type="number" step=".01" readonly></td></tr>
+</tbody></table></div>
+<div class="small">Możesz podawać przychód i koszty jako kwoty brutto albo netto. Przy fakturze 8% lub 23% aplikacja automatycznie przelicza VAT. Wzory podatkowe są zgodne z arkuszem „Kalkulator”, A1:B14. Koszt pomocnika jest dodatkowo odejmowany od zarobku netto. Do Finansów wynik trafia dopiero po oznaczeniu zadania jako „Wykonane”.</div></div></div>
+<div class="field wide camera"><label>📷 Zdjęcia z instalacji / przeglądu / serwisu — można dodać kilka</label><input id="jobPhotosInput" type="file" accept="image/*" capture="environment" multiple><div id="jobPhotos" class="photo-grid"></div></div>
+</div><div class="actions">
+<button>Zapisz</button>
+<button type="button" id="jobProtocolBtn" class="secondary" onclick="printCurrentReviewProtocol()">📄 Protokół / drukuj PDF</button>
+<button type="button" id="jobProtocolEmailBtn" class="secondary" onclick="emailCurrentReviewProtocol()">✉ E-mail do klienta</button>
+<button type="button" id="jobGoogleCalBtn" class="secondary" onclick="addCurrentJobGoogle()">📅 Dodaj do Google Kalendarza</button>
+<button type="button" id="jobOutlookCalBtn" class="secondary" onclick="addCurrentJobOutlook()">📅 Dodaj do Outlook</button>
+<button type="button" class="secondary" onclick="jobDlg.close()">Anuluj</button>
+</div></form></dialog>
+
+<dialog id="financeDlg"><form id="financeForm"><input type="hidden" name="id"><h3>Rozliczenie montażu</h3><div class="form">
+<div class="field"><label>Data</label><input name="date" type="date" required></div><div class="field"><label>Klient</label><select name="clientId" required onchange="fillFinanceDevices()"></select></div><div class="field wide"><label>Urządzenie klienta</label><select name="deviceId"></select></div>
+<div class="field"><label>Stawka VAT</label><select name="vat" onchange="financePreview()"><option value="8">8%</option><option value="23">23%</option><option value="0">0%</option></select></div><div class="field"><label>Faktura brutto (z VAT)</label><input name="gross" type="number" step=".01" oninput="financePreview()"></div>
+<div class="field"><label>Koszty brutto (z VAT)</label><input name="costGross" type="number" step=".01" oninput="financePreview()"></div><div class="field"><label>Koszty pomocnika</label><input name="labor" type="number" step=".01" oninput="financePreview()"></div>
+<div class="field wide"><label>Komentarz</label><textarea name="notes"></textarea></div></div>
+<div class="card" id="financePreviewBox"></div><div class="actions"><button>Zapisz</button><button type="button" class="secondary" onclick="financeDlg.close()">Anuluj</button></div></form></dialog>
+
+<script>
+const OFFER_HTML = new TextDecoder().decode(Uint8Array.from(atob('PCFkb2N0eXBlIGh0bWw+CjxodG1sIGxhbmc9InBsIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9InV0Zi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCxpbml0aWFsLXNjYWxlPTEiPgo8dGl0bGU+R2VuZXJhdG9yIG9mZXJ0IE1VTFRJU1lTVEVNUzwvdGl0bGU+CjxzdHlsZT4KOnJvb3R7CiAgLS1nb2xkOiNjODk1MmU7IC0tZ29sZDI6I2UwYjY1ZjsgLS1pbms6IzE1MTUxNTsgLS1tdXRlZDojNjY2OwogIC0tbGluZTojZGVkZWRlOyAtLXBhbmVsOiNmN2Y3Zjc7IC0td2hpdGU6I2ZmZjsKfQoqe2JveC1zaXppbmc6Ym9yZGVyLWJveH0KYm9keXttYXJnaW46MDtmb250LWZhbWlseTpBcmlhbCxIZWx2ZXRpY2Esc2Fucy1zZXJpZjtiYWNrZ3JvdW5kOiNlY2VjZWM7Y29sb3I6dmFyKC0taW5rKX0KaGVhZGVye2JhY2tncm91bmQ6IzExMTtjb2xvcjojZmZmO3BhZGRpbmc6MTRweCAxOHB4O3Bvc2l0aW9uOnN0aWNreTt0b3A6MDt6LWluZGV4OjU7Ym94LXNoYWRvdzowIDJweCA4cHggIzAwMDN9CmhlYWRlciAuYnJhbmR7Zm9udC1zaXplOjIycHg7Zm9udC13ZWlnaHQ6ODAwO2xldHRlci1zcGFjaW5nOi42cHg7Y29sb3I6I2UyYjQ1Yn0KaGVhZGVyIHNtYWxse2NvbG9yOiNkZGR9Ci5sYXlvdXR7ZGlzcGxheTpncmlkO2dyaWQtdGVtcGxhdGUtY29sdW1uczptaW5tYXgoMzYwcHgsNTIwcHgpIG1pbm1heCg2MjBweCwxZnIpO2dhcDoxOHB4O3BhZGRpbmc6MThweDthbGlnbi1pdGVtczpzdGFydH0KLmNhcmR7YmFja2dyb3VuZDojZmZmO2JvcmRlci1yYWRpdXM6MTJweDtib3gtc2hhZG93OjAgMnB4IDE0cHggIzAwMDE7cGFkZGluZzoxNnB4fQpoMntmb250LXNpemU6MTdweDttYXJnaW46NnB4IDAgMTJweH0KbGFiZWx7Zm9udC1zaXplOjEycHg7Zm9udC13ZWlnaHQ6NzAwO2NvbG9yOiM0NDQ7ZGlzcGxheTpibG9jazttYXJnaW4tYm90dG9tOjVweH0KaW5wdXQsdGV4dGFyZWEsc2VsZWN0e3dpZHRoOjEwMCU7cGFkZGluZzoxMHB4IDExcHg7Ym9yZGVyOjFweCBzb2xpZCAjY2NjO2JvcmRlci1yYWRpdXM6OHB4O2ZvbnQ6aW5oZXJpdDtiYWNrZ3JvdW5kOiNmZmZ9CnRleHRhcmVhe21pbi1oZWlnaHQ6NzZweDtyZXNpemU6dmVydGljYWx9Ci5ncmlkMntkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjFmciAxZnI7Z2FwOjEwcHh9Ci5ncmlkM3tkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOjFmciAxZnIgMWZyO2dhcDoxMHB4fQouZmllbGR7bWFyZ2luLWJvdHRvbToxMHB4fQouaXRlbXN7ZGlzcGxheTpmbGV4O2ZsZXgtZGlyZWN0aW9uOmNvbHVtbjtnYXA6OHB4fQouaXRlbXtib3JkZXI6MXB4IHNvbGlkICNkZGQ7Ym9yZGVyLXJhZGl1czoxMHB4O3BhZGRpbmc6MTBweDtiYWNrZ3JvdW5kOiNmYWZhZmF9Ci5pdGVtLWdyaWR7ZGlzcGxheTpncmlkO2dyaWQtdGVtcGxhdGUtY29sdW1uczoyLjNmciAuN2ZyIC44ZnIgMWZyIC43NWZyIGF1dG87Z2FwOjdweDthbGlnbi1pdGVtczplbmR9Ci5pdGVtIGJ1dHRvbntoZWlnaHQ6NDBweH0KYnV0dG9ue2JvcmRlcjowO2JvcmRlci1yYWRpdXM6OXB4O3BhZGRpbmc6MTBweCAxM3B4O2ZvbnQtd2VpZ2h0OjcwMDtjdXJzb3I6cG9pbnRlcn0KLmJ0bi1nb2xke2JhY2tncm91bmQ6dmFyKC0tZ29sZCk7Y29sb3I6d2hpdGV9Ci5idG4tZGFya3tiYWNrZ3JvdW5kOiMxNzE3MTc7Y29sb3I6d2hpdGV9Ci5idG4tbGlnaHR7YmFja2dyb3VuZDojZWVlO2NvbG9yOiMyMjJ9Ci5idG4tcmVke2JhY2tncm91bmQ6I2VlZTtjb2xvcjojYTAwfQouYWN0aW9uc3tkaXNwbGF5OmZsZXg7ZmxleC13cmFwOndyYXA7Z2FwOjhweDttYXJnaW4tdG9wOjE0cHh9Ci5wcmV2aWV3LXdyYXB7b3ZlcmZsb3c6YXV0b30KY2FudmFze2Rpc3BsYXk6YmxvY2s7bWF4LXdpZHRoOjEwMCU7aGVpZ2h0OmF1dG87YmFja2dyb3VuZDojZmZmO2JveC1zaGFkb3c6MCAycHggMTZweCAjMDAwMjttYXJnaW46YXV0b30KLmhpbnR7Zm9udC1zaXplOjEycHg7Y29sb3I6IzY2NjttYXJnaW4tdG9wOjhweDtsaW5lLWhlaWdodDoxLjQ1fQoudG90YWxib3h7Zm9udC1zaXplOjEzcHg7YmFja2dyb3VuZDojZjZmMWU3O2JvcmRlcjoxcHggc29saWQgI2U2ZDViMTtib3JkZXItcmFkaXVzOjlweDtwYWRkaW5nOjEwcHg7bWFyZ2luLXRvcDoxMHB4fQpAbWVkaWEobWF4LXdpZHRoOjEwNTBweCl7LmxheW91dHtncmlkLXRlbXBsYXRlLWNvbHVtbnM6MWZyfS5wcmV2aWV3LXdyYXB7bWF4LWhlaWdodDpub25lfX0KQG1lZGlhKG1heC13aWR0aDo2NTBweCl7LmdyaWQyLC5ncmlkMywuaXRlbS1ncmlke2dyaWQtdGVtcGxhdGUtY29sdW1uczoxZnJ9LmxheW91dHtwYWRkaW5nOjhweH0uY2FyZHtib3JkZXItcmFkaXVzOjhweH19CkBtZWRpYSBwcmludHsKIGJvZHl7YmFja2dyb3VuZDojZmZmfQogaGVhZGVyLC5lZGl0b3J7ZGlzcGxheTpub25lIWltcG9ydGFudH0KIC5sYXlvdXR7ZGlzcGxheTpibG9jaztwYWRkaW5nOjB9CiAucHJldmlldy1jYXJke2JveC1zaGFkb3c6bm9uZTtwYWRkaW5nOjB9CiBjYW52YXN7Ym94LXNoYWRvdzpub25lO21heC13aWR0aDoxMDAlfQp9Cjwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CjxoZWFkZXI+CiAgPGRpdiBjbGFzcz0iYnJhbmQiPk1VTFRJU1lTVEVNUyDigJQgR2VuZXJhdG9yIG9mZXJ0PC9kaXY+CiAgPHNtYWxsPk9mZXJ0YSBtb250YcW8dSBrbGltYXR5emFjamkg4oCiIGVrc3BvcnQgZG8gSlBHPC9zbWFsbD4KPC9oZWFkZXI+Cgo8ZGl2IGNsYXNzPSJsYXlvdXQiPgo8c2VjdGlvbiBjbGFzcz0iY2FyZCBlZGl0b3IiPgogIDxoMj5EYW5lIG9mZXJ0eTwvaDI+CiAgPGRpdiBjbGFzcz0iZ3JpZDIiPgogICAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5EYXRhPC9sYWJlbD48aW5wdXQgaWQ9ImRhdGUiIHR5cGU9ImRhdGUiPjwvZGl2PgogICAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5UZXJtaW4gd2HFvG5vxZtjaTwvbGFiZWw+PGlucHV0IGlkPSJ2YWxpZGl0eSIgdmFsdWU9IjMwIGRuaSI+PC9kaXY+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5UeXR1xYIgb2ZlcnR5PC9sYWJlbD48aW5wdXQgaWQ9InRpdGxlIiB2YWx1ZT0iT0ZFUlRBIE1PTlRBxbtVIEtMSU1BVFlaQUNKSSI+PC9kaXY+CgogIDxoMj5EYW5lIGtsaWVudGE8L2gyPgogIDxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+TmF6d2EgLyBmaXJtYTwvbGFiZWw+PGlucHV0IGlkPSJjbGllbnROYW1lIiBwbGFjZWhvbGRlcj0ibnAuIElQScWaIFBBTiI+PC9kaXY+CiAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5BZHJlczwvbGFiZWw+PGlucHV0IGlkPSJjbGllbnRBZGRyZXNzIiBwbGFjZWhvbGRlcj0ibnAuIFphYnJ6ZSI+PC9kaXY+CiAgPGRpdiBjbGFzcz0iZ3JpZDIiPgogICAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5FbWFpbDwvbGFiZWw+PGlucHV0IGlkPSJjbGllbnRFbWFpbCIgdHlwZT0iZW1haWwiPjwvZGl2PgogICAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5UZWxlZm9uPC9sYWJlbD48aW5wdXQgaWQ9ImNsaWVudFBob25lIj48L2Rpdj4KICA8L2Rpdj4KCiAgPGgyPlpha3JlcyBvZmVydHk8L2gyPgogIDxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+T3BpczwvbGFiZWw+PHRleHRhcmVhIGlkPSJzY29wZSI+RG9zdGF3YSBpIG1vbnRhxbwga2xpbWF0eXphY2ppIHR5cHUgc3BsaXQuPC90ZXh0YXJlYT48L2Rpdj4KCiAgPGgyPlBvenljamU8L2gyPgogIDxkaXYgaWQ9Iml0ZW1zIiBjbGFzcz0iaXRlbXMiPjwvZGl2PgogIDxidXR0b24gY2xhc3M9ImJ0bi1saWdodCIgaWQ9ImFkZEl0ZW0iIHR5cGU9ImJ1dHRvbiI+KyBEb2RhaiBwb3p5Y2rEmTwvYnV0dG9uPgoKICA8aDI+Um96bGljemVuaWU8L2gyPgogIDxkaXYgY2xhc3M9ImdyaWQzIj4KICAgIDxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+VkFUPC9sYWJlbD4KICAgICAgPHNlbGVjdCBpZD0idmF0Ij48b3B0aW9uIHZhbHVlPSIyMyI+MjMlPC9vcHRpb24+PG9wdGlvbiB2YWx1ZT0iOCI+OCU8L29wdGlvbj48b3B0aW9uIHZhbHVlPSIwIj4wJTwvb3B0aW9uPjwvc2VsZWN0PgogICAgPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJmaWVsZCI+PGxhYmVsPlRyeWIgY2VueTwvbGFiZWw+CiAgICAgIDxzZWxlY3QgaWQ9InByaWNlTW9kZSI+PG9wdGlvbiB2YWx1ZT0ibmV0Ij5DZW5hIG5ldHRvPC9vcHRpb24+PG9wdGlvbiB2YWx1ZT0iZ3Jvc3MiPkNlbmEgYnJ1dHRvPC9vcHRpb24+PC9zZWxlY3Q+CiAgICA8L2Rpdj4KICAgIDxkaXYgY2xhc3M9ImZpZWxkIj48bGFiZWw+PGlucHV0IGlkPSJkaXNjb3VudEVuYWJsZWQiIHR5cGU9ImNoZWNrYm94IiBzdHlsZT0id2lkdGg6YXV0bzttYXJnaW4tcmlnaHQ6N3B4Ij4gV8WCxIVjeiByYWJhdDwvbGFiZWw+PGlucHV0IGlkPSJkaXNjb3VudCIgdHlwZT0ibnVtYmVyIiBtaW49IjAiIG1heD0iMTAwIiBzdGVwPSIwLjEiIHZhbHVlPSIwIiBkaXNhYmxlZD48L2Rpdj4KICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0iZmllbGQiPjxsYWJlbD5Vd2FnaSAob3Bjam9uYWxuaWUpPC9sYWJlbD48dGV4dGFyZWEgaWQ9Im5vdGVzIiBwbGFjZWhvbGRlcj0iWm9zdGF3IHB1c3RlLCBhYnkgc2VrY2phIG5pZSBwb2phd2nFgmEgc2nEmSBuYSBvZmVyY2llLiI+PC90ZXh0YXJlYT48L2Rpdj4KCiAgPGRpdiBjbGFzcz0idG90YWxib3giIGlkPSJ0b3RhbHNUZXh0Ij48L2Rpdj4KCiAgPGRpdiBjbGFzcz0iYWN0aW9ucyI+CiAgICA8YnV0dG9uIGNsYXNzPSJidG4tZ29sZCIgaWQ9ImRvd25sb2FkSnBnIiB0eXBlPSJidXR0b24iPlBvYmllcnogSlBHPC9idXR0b24+CiAgICA8YnV0dG9uIGNsYXNzPSJidG4tZGFyayIgaWQ9InByaW50QnRuIiB0eXBlPSJidXR0b24iPkRydWt1aiAvIFBERjwvYnV0dG9uPgogICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWdvbGQiIGlkPSJlbWFpbEJ0biIgdHlwZT0iYnV0dG9uIj5XecWbbGlqIGVtYWlsICsgUERGPC9idXR0b24+CiAgICA8YnV0dG9uIGNsYXNzPSJidG4tbGlnaHQiIGlkPSJoaXN0b3J5U2F2ZUJ0biIgdHlwZT0iYnV0dG9uIj5aYXBpc3ogb2ZlcnTEmSBkbyBoaXN0b3JpaTwvYnV0dG9uPgogICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWxpZ2h0IiBpZD0ic2F2ZUJ0biIgdHlwZT0iYnV0dG9uIj5aYXBpc3ogZGFuZTwvYnV0dG9uPgogICAgPGJ1dHRvbiBjbGFzcz0iYnRuLWxpZ2h0IiBpZD0ibG9hZEJ0biIgdHlwZT0iYnV0dG9uIj5XY3p5dGFqPC9idXR0b24+CiAgICA8YnV0dG9uIGNsYXNzPSJidG4tcmVkIiBpZD0iY2xlYXJCdG4iIHR5cGU9ImJ1dHRvbiI+V3ljennFm8SHPC9idXR0b24+CiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iaGludCI+R2VuZXJhdG9yIGR6aWHFgmEgbG9rYWxuaWUgdyBwcnplZ2zEhWRhcmNlLiBKUEcgcG93c3RhamUgYmV6cG/Fm3JlZG5pbyB6IGNhbnZhc3UsIGJleiB6ZXduxJl0cnpueWNoIGJpYmxpb3RlayBpIGJleiB3eXN5xYJhbmlhIGRhbnljaCBuYSBzZXJ3ZXIuPC9kaXY+Cjwvc2VjdGlvbj4KCjxzZWN0aW9uIGNsYXNzPSJjYXJkIj4KICA8aDI+SGlzdG9yaWEgb2ZlcnQ8L2gyPgogIDxkaXYgY2xhc3M9ImhpbnQiPk9mZXJ0eSB1dHdvcnpvbmUgaSB3eXPFgmFuZSB6IHRlZ28gdXJ6xIVkemVuaWEuIE1vxbxlc3ogamUgcG9ub3duaWUgb3R3b3J6ecSHLCBlZHl0b3dhxIcgbHViIHVzdW7EhcSHLjwvZGl2PgogIDxkaXYgaWQ9Im9mZmVySGlzdG9yeSIgc3R5bGU9Im1hcmdpbi10b3A6MTJweCI+PC9kaXY+Cjwvc2VjdGlvbj4KCjxzZWN0aW9uIGNsYXNzPSJjYXJkIHByZXZpZXctY2FyZCI+CiAgPGRpdiBjbGFzcz0icHJldmlldy13cmFwIj48Y2FudmFzIGlkPSJvZmZlckNhbnZhcyIgd2lkdGg9IjEyNDAiIGhlaWdodD0iMTc1NCI+PC9jYW52YXM+PC9kaXY+Cjwvc2VjdGlvbj4KPC9kaXY+Cgo8c2NyaXB0Pgpjb25zdCAkPWlkPT5kb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7CmNvbnN0IGNhbnZhcz0kKCdvZmZlckNhbnZhcycpLCBjdHg9Y2FudmFzLmdldENvbnRleHQoJzJkJyk7CmNvbnN0IHN0YXRlSWRzPVsnZGF0ZScsJ3ZhbGlkaXR5JywndGl0bGUnLCdjbGllbnROYW1lJywnY2xpZW50QWRkcmVzcycsJ2NsaWVudEVtYWlsJywnY2xpZW50UGhvbmUnLCdzY29wZScsJ3ZhdCcsJ3ByaWNlTW9kZScsJ2Rpc2NvdW50Jywnbm90ZXMnXTsKCmZ1bmN0aW9uIGZtdChuKXsgcmV0dXJuIE51bWJlcihufHwwKS50b0xvY2FsZVN0cmluZygncGwtUEwnLHttaW5pbXVtRnJhY3Rpb25EaWdpdHM6MixtYXhpbXVtRnJhY3Rpb25EaWdpdHM6Mn0pKycgesWCJzsgfQpmdW5jdGlvbiBudW0odil7IHJldHVybiBOdW1iZXIoU3RyaW5nKHYpLnJlcGxhY2UoJywnLCcuJykpfHwwOyB9CgpmdW5jdGlvbiBhZGRJdGVtKGRhdGE9e25hbWU6J1BhbmFzb25pYyBVWjI1JyxxdHk6MSx1bml0OidzenQuJyxwcmljZTowLGRpc2NvdW50OjB9KXsKICBjb25zdCBkaXY9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7IGRpdi5jbGFzc05hbWU9J2l0ZW0nOwogIGRpdi5pbm5lckhUTUw9YDxkaXYgY2xhc3M9Iml0ZW0tZ3JpZCI+CiAgICA8ZGl2PjxsYWJlbD5OYXp3YTwvbGFiZWw+PGlucHV0IGNsYXNzPSJpLW5hbWUiPjwvZGl2PgogICAgPGRpdj48bGFiZWw+SWxvxZvEhzwvbGFiZWw+PGlucHV0IGNsYXNzPSJpLXF0eSIgdHlwZT0ibnVtYmVyIiBtaW49IjAiIHN0ZXA9IjAuMDEiPjwvZGl2PgogICAgPGRpdj48bGFiZWw+SmVkbi48L2xhYmVsPjxpbnB1dCBjbGFzcz0iaS11bml0Ij48L2Rpdj4KICAgIDxkaXY+PGxhYmVsPkNlbmE8L2xhYmVsPjxpbnB1dCBjbGFzcz0iaS1wcmljZSIgdHlwZT0ibnVtYmVyIiBtaW49IjAiIHN0ZXA9IjAuMDEiPjwvZGl2PgogICAgPGRpdj48bGFiZWw+UmFiYXQgJTwvbGFiZWw+PGlucHV0IGNsYXNzPSJpLWRpc2MiIHR5cGU9Im51bWJlciIgbWluPSIwIiBtYXg9IjEwMCIgc3RlcD0iMC4xIj48L2Rpdj4KICAgIDxidXR0b24gdHlwZT0iYnV0dG9uIiBjbGFzcz0iYnRuLXJlZCByZW1vdmUiPuKclTwvYnV0dG9uPgogIDwvZGl2PmA7CiAgZGl2LnF1ZXJ5U2VsZWN0b3IoJy5pLW5hbWUnKS52YWx1ZT1kYXRhLm5hbWU/PycnOwogIGRpdi5xdWVyeVNlbGVjdG9yKCcuaS1xdHknKS52YWx1ZT1kYXRhLnF0eT8/MTsKICBkaXYucXVlcnlTZWxlY3RvcignLmktdW5pdCcpLnZhbHVlPWRhdGEudW5pdD8/J3N6dC4nOwogIGRpdi5xdWVyeVNlbGVjdG9yKCcuaS1wcmljZScpLnZhbHVlPWRhdGEucHJpY2U/PzA7CiAgZGl2LnF1ZXJ5U2VsZWN0b3IoJy5pLWRpc2MnKS52YWx1ZT1kYXRhLmRpc2NvdW50Pz8wOwogIGRpdi5xdWVyeVNlbGVjdG9yQWxsKCdpbnB1dCcpLmZvckVhY2goZT0+ZS5hZGRFdmVudExpc3RlbmVyKCdpbnB1dCcscmVuZGVyKSk7CiAgZGl2LnF1ZXJ5U2VsZWN0b3IoJy5yZW1vdmUnKS5vbmNsaWNrPSgpPT57ZGl2LnJlbW92ZSgpO3JlbmRlcigpfTsKICAkKCdpdGVtcycpLmFwcGVuZENoaWxkKGRpdik7IHJlbmRlcigpOwp9CmZ1bmN0aW9uIGdldEl0ZW1zKCl7CiByZXR1cm4gWy4uLmRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy5pdGVtJyldLm1hcCh4PT4oewogICBuYW1lOngucXVlcnlTZWxlY3RvcignLmktbmFtZScpLnZhbHVlLAogICBxdHk6bnVtKHgucXVlcnlTZWxlY3RvcignLmktcXR5JykudmFsdWUpLAogICB1bml0OngucXVlcnlTZWxlY3RvcignLmktdW5pdCcpLnZhbHVlLAogICBwcmljZTpudW0oeC5xdWVyeVNlbGVjdG9yKCcuaS1wcmljZScpLnZhbHVlKSwKICAgZGlzY291bnQ6bnVtKHgucXVlcnlTZWxlY3RvcignLmktZGlzYycpLnZhbHVlKQogfSkpOwp9CmZ1bmN0aW9uIHRvdGFscygpewogY29uc3QgdmF0PW51bSgkKCd2YXQnKS52YWx1ZSkvMTAwLCBnZD0kKCdkaXNjb3VudEVuYWJsZWQnKS5jaGVja2VkP251bSgkKCdkaXNjb3VudCcpLnZhbHVlKS8xMDA6MCwgbW9kZT0kKCdwcmljZU1vZGUnKS52YWx1ZTsKIGxldCBiYXNlPTA7CiBmb3IoY29uc3QgaSBvZiBnZXRJdGVtcygpKSBiYXNlICs9IGkucXR5KmkucHJpY2UqKDEtaS5kaXNjb3VudC8xMDApOwogYmFzZSo9MS1nZDsKIGlmKG1vZGU9PT0nbmV0Jyl7CiAgIHJldHVybiB7bmV0OmJhc2UsIHZhdDpiYXNlKnZhdCwgZ3Jvc3M6YmFzZSooMSt2YXQpfTsKIH1lbHNlewogICBjb25zdCBuZXQ9dmF0PT09MD9iYXNlOmJhc2UvKDErdmF0KTsKICAgcmV0dXJuIHtuZXQsdmF0OmJhc2UtbmV0LGdyb3NzOmJhc2V9OwogfQp9CmZ1bmN0aW9uIHdyYXAodGV4dCxtYXhXaWR0aCxmb250KXsKIGN0eC5mb250PWZvbnQ7CiBjb25zdCBwYXJhcz1TdHJpbmcodGV4dHx8JycpLnNwbGl0KCdcbicpLCBsaW5lcz1bXTsKIGZvcihjb25zdCBwIG9mIHBhcmFzKXsKICAgaWYoIXApe2xpbmVzLnB1c2goJycpO2NvbnRpbnVlfQogICBsZXQgbGluZT0nJzsKICAgZm9yKGNvbnN0IHdvcmQgb2YgcC5zcGxpdCgvXHMrLykpewogICAgIGNvbnN0IHRlc3Q9bGluZT9saW5lKycgJyt3b3JkOndvcmQ7CiAgICAgaWYoY3R4Lm1lYXN1cmVUZXh0KHRlc3QpLndpZHRoPm1heFdpZHRoICYmIGxpbmUpe2xpbmVzLnB1c2gobGluZSk7bGluZT13b3JkfWVsc2UgbGluZT10ZXN0OwogICB9CiAgIGlmKGxpbmUpIGxpbmVzLnB1c2gobGluZSk7CiB9CiByZXR1cm4gbGluZXM7Cn0KZnVuY3Rpb24gZHJhd1RleHQodGV4dCx4LHksZm9udD0nIycsY29sb3I9JyMxNTE1MTUnLGFsaWduPSdsZWZ0Jyl7CiBjdHguZm9udD1mb250OyBjdHguZmlsbFN0eWxlPWNvbG9yOyBjdHgudGV4dEFsaWduPWFsaWduOyBjdHgudGV4dEJhc2VsaW5lPSdhbHBoYWJldGljJzsgY3R4LmZpbGxUZXh0KHRleHQseCx5KTsKfQpmdW5jdGlvbiByb3VuZFJlY3QoeCx5LHcsaCxyLGZpbGwsc3Ryb2tlKXsKIGN0eC5iZWdpblBhdGgoKTsgY3R4LnJvdW5kUmVjdCh4LHksdyxoLHIpOwogaWYoZmlsbCl7Y3R4LmZpbGxTdHlsZT1maWxsO2N0eC5maWxsKCl9IGlmKHN0cm9rZSl7Y3R4LnN0cm9rZVN0eWxlPXN0cm9rZTtjdHgubGluZVdpZHRoPTE7Y3R4LnN0cm9rZSgpfQp9CmZ1bmN0aW9uIGxpbmUoeDEseTEseDIseTIsY29sb3I9JyNkZGQnLHc9MSl7Y3R4LmJlZ2luUGF0aCgpO2N0eC5tb3ZlVG8oeDEseTEpO2N0eC5saW5lVG8oeDIseTIpO2N0eC5zdHJva2VTdHlsZT1jb2xvcjtjdHgubGluZVdpZHRoPXc7Y3R4LnN0cm9rZSgpfQpmdW5jdGlvbiByZW5kZXIoKXsKIGN0eC5jbGVhclJlY3QoMCwwLGNhbnZhcy53aWR0aCxjYW52YXMuaGVpZ2h0KTsKIGN0eC5maWxsU3R5bGU9JyNmZmYnOyBjdHguZmlsbFJlY3QoMCwwLGNhbnZhcy53aWR0aCxjYW52YXMuaGVpZ2h0KTsKCiBjb25zdCBMPTQwLCBSPTEyMDAsIFc9Ui1MOwogY29uc3QgZ29sZD0nI2M1OGMwOCcsIGluaz0nIzExMScsIGdyYXk9JyNlZmVmZWYnLCBncmlkPScjY2ZjZmNmJzsKIGxldCB5PTExMjsKCiAvLyBOYWfFgsOzd2VrIGphayB3IHphYWtjZXB0b3dhbnltIHd6b3J6ZQogZHJhd1RleHQoJ01VTFRJU1lTVEVNUycsY2FudmFzLndpZHRoLzIseSwnYm9sZCA3MnB4IEFyaWFsJyxnb2xkLCdjZW50ZXInKTsKIGRyYXdUZXh0KCdTdGVwb3dhIDM2LCA0NC0xMDUgR2xpd2ljZSAg4oCiICBOSVAgNTc3MTg5ODY4MCcsY2FudmFzLndpZHRoLzIseSs1MiwnMjNweCBBcmlhbCcsaW5rLCdjZW50ZXInKTsKIGRyYXdUZXh0KCdiaXVyb0BtdWx0aXN5c3RlbXMuY29tLnBsICDigKIgIDUwMiA5ODAgNjE5JyxjYW52YXMud2lkdGgvMix5KzkxLCcyM3B4IEFyaWFsJyxpbmssJ2NlbnRlcicpOwogbGluZShMLHkrMTIxLFIseSsxMjEsZ29sZCwzKTsKIHkrPTIwNTsKCiBkcmF3VGV4dCgkKCd0aXRsZScpLnZhbHVlfHwnT0ZFUlRBIE1PTlRBxbtVIEtMSU1BVFlaQUNKSScsY2FudmFzLndpZHRoLzIseSwnYm9sZCAzN3B4IEFyaWFsJyxpbmssJ2NlbnRlcicpOwogeSs9NzI7CiBkcmF3VGV4dCgnRGF0YTonLEwseSwnYm9sZCAyMnB4IEFyaWFsJyxpbmspOwogZHJhd1RleHQoZm9ybWF0RGF0ZSgkKCdkYXRlJykudmFsdWUpLEwrODIseSwnMjJweCBBcmlhbCcsaW5rKTsKIHkrPTQ4OwogZHJhd1RleHQoJ1Rlcm1pbiB3YcW8bm/Fm2NpOicsTCx5LCdib2xkIDIycHggQXJpYWwnLGluayk7CiBkcmF3VGV4dCgkKCd2YWxpZGl0eScpLnZhbHVlfHwn4oCUJyxMKzIzNSx5LCcyMnB4IEFyaWFsJyxpbmspOwogeSs9Njg7CgogeT1zZWN0aW9uKCdEQU5FIEtMSUVOVEEnLHksTCxSLGdvbGQsaW5rKTsKIGNvbnN0IHJvd3M9WwogICBbJ05hendhIC8gZmlybWE6JywkKCdjbGllbnROYW1lJykudmFsdWV8fCfigJQnXSwKICAgWydBZHJlczonLCQoJ2NsaWVudEFkZHJlc3MnKS52YWx1ZXx8J+KAlCddLAogICBbJ0VtYWlsOicsJCgnY2xpZW50RW1haWwnKS52YWx1ZXx8J+KAlCddLAogICBbJ1RlbGVmb246JywkKCdjbGllbnRQaG9uZScpLnZhbHVlfHwn4oCUJ10KIF07CiBmb3IoY29uc3QgW2EsYl0gb2Ygcm93cyl7CiAgIGRyYXdUZXh0KGEsTCx5LCdib2xkIDIxcHggQXJpYWwnLGluayk7CiAgIGRyYXdUZXh0KGIsTCsyNjgseSwnMjFweCBBcmlhbCcsaW5rKTsKICAgeSs9NDg7CiB9CiB5Kz0yMjsKCiB5PXNlY3Rpb24oJ1pBS1JFUyBPRkVSVFknLHksTCxSLGdvbGQsaW5rKTsKIGNvbnN0IHNjb3BlTGluZXM9d3JhcCgkKCdzY29wZScpLnZhbHVlLFcsJzIycHggQXJpYWwnKTsKIGZvcihjb25zdCB0IG9mIHNjb3BlTGluZXMpe2RyYXdUZXh0KHQsTCx5LCcyMnB4IEFyaWFsJyxpbmspOyB5Kz0zOTt9CiB5Kz0zMDsKCiB5PXNlY3Rpb24oJ1pFU1RBV0lFTklFIE9GRVJUT1dFJyx5LEwsUixnb2xkLGluayk7CgogY29uc3QgbW9kZT0kKCdwcmljZU1vZGUnKS52YWx1ZTsKIGNvbnN0IGdsb2JhbERpc2M9JCgnZGlzY291bnRFbmFibGVkJykuY2hlY2tlZD9udW0oJCgnZGlzY291bnQnKS52YWx1ZSk6MDsKIGNvbnN0IGl0ZW1zPWdldEl0ZW1zKCk7CiBjb25zdCBoYXNEaXNjb3VudD0kKCdkaXNjb3VudEVuYWJsZWQnKS5jaGVja2VkOwoKIC8vIFN6ZXJva2/Fm2NpIHd6b3Jvd2FuZSBuYSBvZmVyY2llIHJlZmVyZW5jeWpuZWo7IHJhYmF0IGRvZGFqZSBkd2llIGtvbHVtbnkuCiBjb25zdCBjb2xzID0gaGFzRGlzY291bnQKICAgPyBbTCwgTCs3MCwgTCszOTAsIEwrNDgwLCBMKzU5MCwgTCs3NDUsIEwrODU1LCBMKzEwMTAsIFJdCiAgIDogW0wsIEwrOTUsIEwrNDQ1LCBMKzU2NSwgTCs3MTUsIEwrOTAwLCBSXTsKIGNvbnN0IGhlYWRlcnMgPSBoYXNEaXNjb3VudAogICA/IFsnTHAuJywnTmF6d2EnLCdJbG/Fm8SHJywnSmVkbi4nLCdDZW5hICcrKG1vZGU9PT0nbmV0Jz8nbmV0dG8nOidicnV0dG8nKSwnUmFiYXQnLCdDZW5hIHBvIHJhYmFjaWUnLCdXYXJ0b8WbxIcgJysobW9kZT09PSduZXQnPyduZXR0byc6J2JydXR0bycpXQogICA6IFsnTHAuJywnTmF6d2EnLCdJbG/Fm8SHJywnSmVkbi4nLCdDZW5hICcrKG1vZGU9PT0nbmV0Jz8nbmV0dG8nOidicnV0dG8nKSwnV2FydG/Fm8SHICcrKG1vZGU9PT0nbmV0Jz8nbmV0dG8nOidicnV0dG8nKV07CgogY29uc3QgaGVhZGVySD01ODsKIGN0eC5maWxsU3R5bGU9Z3JheTsgY3R4LmZpbGxSZWN0KEwseSxXLGhlYWRlckgpOwogZm9yKGxldCBqPTA7ajxoZWFkZXJzLmxlbmd0aDtqKyspewogICBsaW5lKGNvbHNbal0seSxjb2xzW2pdLHkraGVhZGVySCxncmlkLDEpOwogICBjb25zdCBjdz1jb2xzW2orMV0tY29sc1tqXTsKICAgY29uc3QgZnM9aGFzRGlzY291bnQ/MTY6MTg7CiAgIGNvbnN0IGxpbmVzPXdyYXAoaGVhZGVyc1tqXSxjdy0xMixgYm9sZCAke2ZzfXB4IEFyaWFsYCk7CiAgIGxldCBoeT15KyhsaW5lcy5sZW5ndGg9PT0xPzM5OjI3KTsKICAgZm9yKGNvbnN0IHQgb2YgbGluZXMpe2RyYXdUZXh0KHQsY29sc1tqXStjdy8yLGh5LGBib2xkICR7ZnN9cHggQXJpYWxgLGluaywnY2VudGVyJyk7aHkrPTIwO30KIH0KIGxpbmUoUix5LFIseStoZWFkZXJILGdyaWQsMSk7IGxpbmUoTCx5LFIseSxncmlkLDEpOyBsaW5lKEwseStoZWFkZXJILFIseStoZWFkZXJILGdyaWQsMSk7CiB5Kz1oZWFkZXJIOwoKIGZvcihsZXQgaWR4PTA7aWR4PGl0ZW1zLmxlbmd0aDtpZHgrKyl7CiAgIGNvbnN0IGl0PWl0ZW1zW2lkeF07CiAgIGNvbnN0IGVmZmVjdGl2ZURpc2M9aGFzRGlzY291bnQgPyAxLSgoMS1pdC5kaXNjb3VudC8xMDApKigxLWdsb2JhbERpc2MvMTAwKSkgOiAwOwogICBjb25zdCB1bml0QWZ0ZXI9aXQucHJpY2UqKDEtZWZmZWN0aXZlRGlzYyk7CiAgIGNvbnN0IHZhbD1pdC5xdHkqdW5pdEFmdGVyOwogICBjb25zdCBuYW1lV2lkdGg9KGNvbHNbMl0tY29sc1sxXSktMjQ7CiAgIGNvbnN0IG5hbWVMaW5lcz13cmFwKGl0Lm5hbWUsbmFtZVdpZHRoLCcyMHB4IEFyaWFsJyk7CiAgIGNvbnN0IGg9TWF0aC5tYXgoNjIsbmFtZUxpbmVzLmxlbmd0aCoyNisyNCk7CiAgIGZvcihjb25zdCBjeCBvZiBjb2xzKSBsaW5lKGN4LHksY3gseStoLGdyaWQsMSk7CiAgIGxpbmUoUix5LFIseStoLGdyaWQsMSk7IGxpbmUoTCx5K2gsUix5K2gsZ3JpZCwxKTsKICAgY29uc3QgbWlkPXkraC8yKzc7CiAgIGRyYXdUZXh0KFN0cmluZyhpZHgrMSksKGNvbHNbMF0rY29sc1sxXSkvMixtaWQsJzIwcHggQXJpYWwnLGluaywnY2VudGVyJyk7CiAgIGxldCBueT15KzI4OyBmb3IoY29uc3QgdCBvZiBuYW1lTGluZXMpe2RyYXdUZXh0KHQsY29sc1sxXSsyMCxueSwnMjBweCBBcmlhbCcsaW5rKTtueSs9MjY7fQogICBkcmF3VGV4dCh0cmltUXR5KGl0LnF0eSksKGNvbHNbMl0rY29sc1szXSkvMixtaWQsJzIwcHggQXJpYWwnLGluaywnY2VudGVyJyk7CiAgIGRyYXdUZXh0KGl0LnVuaXR8fCdzenQuJywoY29sc1szXStjb2xzWzRdKS8yLG1pZCwnMjBweCBBcmlhbCcsaW5rLCdjZW50ZXInKTsKICAgaWYoaGFzRGlzY291bnQpewogICAgIGNvbnN0IHNob3duRGlzYz1lZmZlY3RpdmVEaXNjKjEwMDsKICAgICBkcmF3VGV4dChmbXQoaXQucHJpY2UpLGNvbHNbNV0tMTQsbWlkLCcxN3B4IEFyaWFsJyxpbmssJ3JpZ2h0Jyk7CiAgICAgZHJhd1RleHQoc2hvd25EaXNjPjA/c2hvd25EaXNjLnRvTG9jYWxlU3RyaW5nKCdwbC1QTCcse21heGltdW1GcmFjdGlvbkRpZ2l0czoxfSkrJyUnOifigJQnLChjb2xzWzVdK2NvbHNbNl0pLzIsbWlkLCcxN3B4IEFyaWFsJyxpbmssJ2NlbnRlcicpOwogICAgIGRyYXdUZXh0KGZtdCh1bml0QWZ0ZXIpLGNvbHNbN10tMTQsbWlkLCcxN3B4IEFyaWFsJyxpbmssJ3JpZ2h0Jyk7CiAgICAgZHJhd1RleHQoZm10KHZhbCksY29sc1s4XS0xNCxtaWQsJ2JvbGQgMTdweCBBcmlhbCcsaW5rLCdyaWdodCcpOwogICB9ZWxzZXsKICAgICBkcmF3VGV4dChmbXQoaXQucHJpY2UpLGNvbHNbNV0tMTgsbWlkLCcyMHB4IEFyaWFsJyxpbmssJ3JpZ2h0Jyk7CiAgICAgZHJhd1RleHQoZm10KHZhbCksUi0xOCxtaWQsJzIwcHggQXJpYWwnLGluaywncmlnaHQnKTsKICAgfQogICB5Kz1oOwogfQogeSs9Mjg7CgogY29uc3QgdD10b3RhbHMoKTsKICQoJ3RvdGFsc1RleHQnKS50ZXh0Q29udGVudD1gTmV0dG86ICR7Zm10KHQubmV0KX0gfCBWQVQgJHskKCd2YXQnKS52YWx1ZX0lOiAke2ZtdCh0LnZhdCl9IHwgQnJ1dHRvOiAke2ZtdCh0Lmdyb3NzKX1gOwoKIC8vIFBvZHN1bW93YW5pZSBwbyBwcmF3ZWogc3Ryb25pZSBqYWsgbmEgd3pvcnplCiBjb25zdCBieD02MTA7CiBkcmF3VGV4dCgnU3Rhd2thIFZBVDonLFItMTYwLHksJzIxcHggQXJpYWwnLGluaywncmlnaHQnKTsKIGRyYXdUZXh0KCQoJ3ZhdCcpLnZhbHVlKyclJyxSLHksJzIxcHggQXJpYWwnLGluaywncmlnaHQnKTsKIHkrPTM4OwogbGluZShieCx5LFIseSwnIzIyMicsMik7IHkrPTM1OwogZHJhd1RleHQoJ1dhcnRvxZvEhyBuZXR0bycsYngrMTgseSwnMjFweCBBcmlhbCcsaW5rKTsKIGRyYXdUZXh0KGZtdCh0Lm5ldCksUix5LCcyMXB4IEFyaWFsJyxpbmssJ3JpZ2h0Jyk7CiB5Kz00MjsKIGRyYXdUZXh0KCdWQVQgJyskKCd2YXQnKS52YWx1ZSsnJScsYngrMTgseSwnMjFweCBBcmlhbCcsaW5rKTsKIGRyYXdUZXh0KGZtdCh0LnZhdCksUix5LCcyMXB4IEFyaWFsJyxpbmssJ3JpZ2h0Jyk7CiB5Kz0yMzsKIGxpbmUoYngseSxSLHksJyMyMjInLDIpOyB5Kz0zOTsKIGRyYXdUZXh0KCdXYXJ0b8WbxIcgYnJ1dHRvJyxieCsxOCx5LCdib2xkIDIzcHggQXJpYWwnLGluayk7CiBkcmF3VGV4dChmbXQodC5ncm9zcyksUix5LCdib2xkIDI1cHggQXJpYWwnLGluaywncmlnaHQnKTsKIHkrPTIyOwogbGluZShieCx5LFIseSwnIzIyMicsMik7CiB5Kz00MjsKCiBjb25zdCBub3Rlcz0kKCdub3RlcycpLnZhbHVlLnRyaW0oKTsKIGlmKG5vdGVzKXsKICAgeT1zZWN0aW9uKCdVV0FHSScseSxMLFIsZ29sZCxpbmspOwogICBjb25zdCBubGluZXM9d3JhcChub3RlcyxXLCcyMXB4IEFyaWFsJyk7CiAgIGZvcihjb25zdCBxIG9mIG5saW5lcyl7ZHJhd1RleHQocSxMLHksJzIxcHggQXJpYWwnLGluayk7IHkrPTM0O30KICAgeSs9MzA7CiB9CgogLy8gU3RvcGthIHBvIHByYXdlaiwgYmV6IGFkcmVzdSB3d3cKIGNvbnN0IGZvb3Rlclk9TWF0aC5taW4oTWF0aC5tYXgoeSszNiwxNTM1KSwxNjYwKTsKIGRyYXdUZXh0KCdaIHBvd2HFvGFuaWVtLCcsUi0xOCxmb290ZXJZLCcyMXB4IEFyaWFsJyxpbmssJ3JpZ2h0Jyk7CiBkcmF3VGV4dCgnTVVMVElTWVNURU1TJyxSLTE4LGZvb3RlclkrNDYsJ2JvbGQgMjdweCBBcmlhbCcsZ29sZCwncmlnaHQnKTsKfQpmdW5jdGlvbiBzZWN0aW9uKG5hbWUseSxMLFIsZ29sZCxpbmspewogZHJhd1RleHQobmFtZSxMLHksJ2JvbGQgMjRweCBBcmlhbCcsZ29sZCk7CiBsaW5lKEwseSsxNyxSLHkrMTcsZ29sZCwyKTsKIHJldHVybiB5KzUwOwp9CmZ1bmN0aW9uIHRyaW1RdHkocSl7cmV0dXJuIE51bWJlci5pc0ludGVnZXIocSk/U3RyaW5nKHEpOlN0cmluZyhxKS5yZXBsYWNlKCcuJywnLCcpfQpmdW5jdGlvbiBmb3JtYXREYXRlKHYpewogaWYoIXYpcmV0dXJuICfigJQnOyBjb25zdCBbeXksbW0sZGRdPXYuc3BsaXQoJy0nKTsgcmV0dXJuIGAke2RkfS4ke21tfS4ke3l5fWA7Cn0KZnVuY3Rpb24gZ2V0U3RhdGUoKXtjb25zdCBzPU9iamVjdC5mcm9tRW50cmllcyhzdGF0ZUlkcy5tYXAoaWQ9PltpZCwkKGlkKS52YWx1ZV0pLmNvbmNhdChbWydpdGVtcycsZ2V0SXRlbXMoKV1dKSk7cy5kaXNjb3VudEVuYWJsZWQ9JCgnZGlzY291bnRFbmFibGVkJykuY2hlY2tlZDtyZXR1cm4gc30KZnVuY3Rpb24gc2V0U3RhdGUocyl7CiBzdGF0ZUlkcy5mb3JFYWNoKGlkPT57aWYoc1tpZF0hPW51bGwpJChpZCkudmFsdWU9c1tpZF19KTsgJCgnZGlzY291bnRFbmFibGVkJykuY2hlY2tlZD0hIXMuZGlzY291bnRFbmFibGVkOyAkKCdkaXNjb3VudCcpLmRpc2FibGVkPSEkKCdkaXNjb3VudEVuYWJsZWQnKS5jaGVja2VkOwogJCgnaXRlbXMnKS5pbm5lckhUTUw9Jyc7IChzLml0ZW1zfHxbXSkuZm9yRWFjaChhZGRJdGVtKTsgaWYoIShzLml0ZW1zfHxbXSkubGVuZ3RoKWFkZEl0ZW0oKTsgcmVuZGVyKCk7Cn0KZnVuY3Rpb24gc2F2ZSgpe2xvY2FsU3RvcmFnZS5zZXRJdGVtKCdtdWx0aXN5c3RlbXNfb2ZmZXJfZ2VuZXJhdG9yX3YyJyxKU09OLnN0cmluZ2lmeShnZXRTdGF0ZSgpKSk7IGFsZXJ0KCdEYW5lIG9mZXJ0eSB6YXBpc2FuZSB3IHRlaiBwcnplZ2zEhWRhcmNlLicpfQpmdW5jdGlvbiBsb2FkKCl7CiBjb25zdCBzPWxvY2FsU3RvcmFnZS5nZXRJdGVtKCdtdWx0aXN5c3RlbXNfb2ZmZXJfZ2VuZXJhdG9yX3YyJyk7CiBpZighcylyZXR1cm4gYWxlcnQoJ0JyYWsgemFwaXNhbmVqIG9mZXJ0eS4nKTsKIHRyeXtzZXRTdGF0ZShKU09OLnBhcnNlKHMpKX1jYXRjaChlKXthbGVydCgnTmllIHVkYcWCbyBzacSZIHdjenl0YcSHIGRhbnljaC4nKX0KfQpmdW5jdGlvbiBjbGVhckFsbCgpewogY29uc3QgdG9kYXk9bmV3IERhdGUoKS50b0lTT1N0cmluZygpLnNsaWNlKDAsMTApOwogc2V0U3RhdGUoe2RhdGU6dG9kYXksdmFsaWRpdHk6JzMwIGRuaScsdGl0bGU6J09GRVJUQSBNT05UQcW7VSBLTElNQVRZWkFDSkknLHNjb3BlOidEb3N0YXdhIGkgbW9udGHFvCBrbGltYXR5emFjamkgdHlwdSBzcGxpdC4nLHZhdDonMjMnLHByaWNlTW9kZTonbmV0JyxkaXNjb3VudDonMCcsbm90ZXM6JycsY2xpZW50TmFtZTonJyxjbGllbnRBZGRyZXNzOicnLGNsaWVudEVtYWlsOicnLGNsaWVudFBob25lOicnLGl0ZW1zOlt7bmFtZTonJyxxdHk6MSx1bml0OidzenQuJyxwcmljZTowLGRpc2NvdW50OjB9XX0pOwp9Cgpjb25zdCBISVNUT1JZX0tFWT0nbXVsdGlzeXN0ZW1zX29mZmVyX2hpc3RvcnlfdjEnOwpsZXQgZWRpdGluZ0hpc3RvcnlJZD1udWxsOwpmdW5jdGlvbiBoaXN0b3J5R2V0KCl7dHJ5e3JldHVybiBKU09OLnBhcnNlKGxvY2FsU3RvcmFnZS5nZXRJdGVtKEhJU1RPUllfS0VZKXx8J1tdJyl9Y2F0Y2goZSl7cmV0dXJuIFtdfX0KZnVuY3Rpb24gaGlzdG9yeVNldChhKXtsb2NhbFN0b3JhZ2Uuc2V0SXRlbShISVNUT1JZX0tFWSxKU09OLnN0cmluZ2lmeShhKSk7cmVuZGVySGlzdG9yeSgpfQpmdW5jdGlvbiBvZmZlclRvdGFsVGV4dCgpe2xldCB0PXRvdGFscygpO3JldHVybiBmbXQodC5ncm9zcyl9CmZ1bmN0aW9uIHNhdmVIaXN0b3J5KHN0YXR1cz0nVXR3b3J6b25hJyl7CiBjb25zdCBhPWhpc3RvcnlHZXQoKSwgc3Q9Z2V0U3RhdGUoKSwgbm93PW5ldyBEYXRlKCkudG9JU09TdHJpbmcoKTsKIGlmKGVkaXRpbmdIaXN0b3J5SWQpewogICBsZXQgaT1hLmZpbmRJbmRleCh4PT54LmlkPT09ZWRpdGluZ0hpc3RvcnlJZCk7CiAgIGlmKGk+PTApYVtpXT17Li4uYVtpXSxzdGF0ZTpzdCxzdGF0dXMsdXBkYXRlZEF0Om5vdyx0b3RhbDpvZmZlclRvdGFsVGV4dCgpfTsKICAgZWRpdGluZ0hpc3RvcnlJZD1udWxsOwogfWVsc2UgYS51bnNoaWZ0KHtpZDooY3J5cHRvLnJhbmRvbVVVSUQ/Y3J5cHRvLnJhbmRvbVVVSUQoKTpEYXRlLm5vdygpKyctJytNYXRoLnJhbmRvbSgpKSxzdGF0ZTpzdCxzdGF0dXMsY3JlYXRlZEF0Om5vdyx1cGRhdGVkQXQ6bm93LHRvdGFsOm9mZmVyVG90YWxUZXh0KCl9KTsKIGhpc3RvcnlTZXQoYSk7IGFsZXJ0KCdPZmVydGEgemFwaXNhbmEgdyBoaXN0b3JpaS4nKTsKfQpmdW5jdGlvbiBlZGl0SGlzdG9yeShpZCl7bGV0IHg9aGlzdG9yeUdldCgpLmZpbmQoeD0+eC5pZD09PWlkKTtpZigheClyZXR1cm47ZWRpdGluZ0hpc3RvcnlJZD1pZDtzZXRTdGF0ZSh4LnN0YXRlKTt3aW5kb3cuc2Nyb2xsVG8oe3RvcDowLGJlaGF2aW9yOidzbW9vdGgnfSk7fQpmdW5jdGlvbiBkZWxldGVIaXN0b3J5KGlkKXtpZighY29uZmlybSgnVXN1bsSFxIcgdMSZIG9mZXJ0xJkgeiBoaXN0b3JpaT8nKSlyZXR1cm47aGlzdG9yeVNldChoaXN0b3J5R2V0KCkuZmlsdGVyKHg9PnguaWQhPT1pZCkpfQpmdW5jdGlvbiBkdXBsaWNhdGVIaXN0b3J5KGlkKXtsZXQgeD1oaXN0b3J5R2V0KCkuZmluZCh4PT54LmlkPT09aWQpO2lmKCF4KXJldHVybjtlZGl0aW5nSGlzdG9yeUlkPW51bGw7c2V0U3RhdGUoeC5zdGF0ZSk7d2luZG93LnNjcm9sbFRvKHt0b3A6MCxiZWhhdmlvcjonc21vb3RoJ30pO30KZnVuY3Rpb24gcmVuZGVySGlzdG9yeSgpewogbGV0IGE9aGlzdG9yeUdldCgpLCBlbD0kKCdvZmZlckhpc3RvcnknKTsgaWYoIWVsKXJldHVybjsKIGlmKCFhLmxlbmd0aCl7ZWwuaW5uZXJIVE1MPSc8ZGl2IGNsYXNzPSJoaW50Ij5CcmFrIHphcGlzYW55Y2ggb2ZlcnQuPC9kaXY+JztyZXR1cm59CiBlbC5pbm5lckhUTUw9YS5tYXAoeD0+e2xldCBzPXguc3RhdGV8fHt9LGR0PW5ldyBEYXRlKHgudXBkYXRlZEF0fHx4LmNyZWF0ZWRBdCkudG9Mb2NhbGVTdHJpbmcoJ3BsLVBMJyk7cmV0dXJuIGA8ZGl2IHN0eWxlPSJib3JkZXI6MXB4IHNvbGlkICNkZGQ7Ym9yZGVyLXJhZGl1czoxMHB4O3BhZGRpbmc6MTBweDttYXJnaW46OHB4IDA7YmFja2dyb3VuZDojZmZmIj48Yj4keyhzLmNsaWVudE5hbWV8fCdCZXogbmF6d3knKS5yZXBsYWNlKC9bPD4mIl0vZywnJyl9PC9iPiDigJQgJHt4LnRvdGFsfHwnJ308YnI+PHNwYW4gY2xhc3M9ImhpbnQiPiR7ZHR9IOKAoiAke3guc3RhdHVzfHwnVXR3b3J6b25hJ308L3NwYW4+PGRpdiBjbGFzcz0iYWN0aW9ucyIgc3R5bGU9Im1hcmdpbi10b3A6OHB4Ij48YnV0dG9uIGNsYXNzPSJidG4tbGlnaHQiIHR5cGU9ImJ1dHRvbiIgb25jbGljaz0iZWRpdEhpc3RvcnkoJyR7eC5pZH0nKSI+RWR5dHVqPC9idXR0b24+PGJ1dHRvbiBjbGFzcz0iYnRuLWxpZ2h0IiB0eXBlPSJidXR0b24iIG9uY2xpY2s9ImR1cGxpY2F0ZUhpc3RvcnkoJyR7eC5pZH0nKSI+T3R3w7NyeiBrb3BpxJk8L2J1dHRvbj48YnV0dG9uIGNsYXNzPSJidG4tcmVkIiB0eXBlPSJidXR0b24iIG9uY2xpY2s9ImRlbGV0ZUhpc3RvcnkoJyR7eC5pZH0nKSI+VXN1xYQ8L2J1dHRvbj48L2Rpdj48L2Rpdj5gfSkuam9pbignJykKfQpmdW5jdGlvbiBiYXNlNjRCeXRlcyhkYXRhVXJsKXtsZXQgYj1hdG9iKGRhdGFVcmwuc3BsaXQoJywnKVsxXSksdT1uZXcgVWludDhBcnJheShiLmxlbmd0aCk7Zm9yKGxldCBpPTA7aTxiLmxlbmd0aDtpKyspdVtpXT1iLmNoYXJDb2RlQXQoaSk7cmV0dXJuIHV9CmZ1bmN0aW9uIG1ha2VQZGZCbG9iKCl7CiByZW5kZXIoKTsKIGNvbnN0IGpwZz1iYXNlNjRCeXRlcyhjYW52YXMudG9EYXRhVVJMKCdpbWFnZS9qcGVnJywwLjkzKSk7CiBjb25zdCBlbmM9bmV3IFRleHRFbmNvZGVyKCksIHBhcnRzPVtdLCBvZmZzZXRzPVswXSwgcHVzaD14PT5wYXJ0cy5wdXNoKHR5cGVvZiB4PT09J3N0cmluZyc/ZW5jLmVuY29kZSh4KTp4KTsKIHB1c2goJyVQREYtMS40XG4nKTsKIGNvbnN0IG9ianM9WwogJzw8IC9UeXBlIC9DYXRhbG9nIC9QYWdlcyAyIDAgUiA+PicsCiAnPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4nLAogJzw8IC9UeXBlIC9QYWdlIC9QYXJlbnQgMiAwIFIgL01lZGlhQm94IFswIDAgNTk1IDg0Ml0gL1Jlc291cmNlcyA8PCAvWE9iamVjdCA8PCAvSW0wIDUgMCBSID4+ID4+IC9Db250ZW50cyA0IDAgUiA+PicsCiAnPDwgL0xlbmd0aCAzMSA+Plxuc3RyZWFtXG5xXG41OTUgMCAwIDg0MiAwIDAgY21cbi9JbTAgRG9cblFcbmVuZHN0cmVhbScsCiBudWxsCiBdOwogbGV0IHNpemU9cGFydHMucmVkdWNlKChuLHApPT5uK3AubGVuZ3RoLDApOwogZm9yKGxldCBpPTA7aTw1O2krKyl7CiAgIG9mZnNldHNbaSsxXT1zaXplOwogICBpZihpPT09NCl7CiAgICAgcHVzaChgNSAwIG9ialxuPDwgL1R5cGUgL1hPYmplY3QgL1N1YnR5cGUgL0ltYWdlIC9XaWR0aCAke2NhbnZhcy53aWR0aH0gL0hlaWdodCAke2NhbnZhcy5oZWlnaHR9IC9Db2xvclNwYWNlIC9EZXZpY2VSR0IgL0JpdHNQZXJDb21wb25lbnQgOCAvRmlsdGVyIC9EQ1REZWNvZGUgL0xlbmd0aCAke2pwZy5sZW5ndGh9ID4+XG5zdHJlYW1cbmApOwogICAgIHB1c2goanBnKTsgcHVzaCgnXG5lbmRzdHJlYW1cbmVuZG9ialxuJyk7CiAgIH1lbHNlIHB1c2goYCR7aSsxfSAwIG9ialxuJHtvYmpzW2ldfVxuZW5kb2JqXG5gKTsKICAgc2l6ZT1wYXJ0cy5yZWR1Y2UoKG4scCk9Pm4rcC5sZW5ndGgsMCk7CiB9CiBsZXQgeHJlZj1zaXplOwogcHVzaCgneHJlZlxuMCA2XG4wMDAwMDAwMDAwIDY1NTM1IGYgXG4nKTsKIGZvcihsZXQgaT0xO2k8PTU7aSsrKXB1c2goU3RyaW5nKG9mZnNldHNbaV0pLnBhZFN0YXJ0KDEwLCcwJykrJyAwMDAwMCBuIFxuJyk7CiBwdXNoKGB0cmFpbGVyXG48PCAvU2l6ZSA2IC9Sb290IDEgMCBSID4+XG5zdGFydHhyZWZcbiR7eHJlZn1cbiUlRU9GYCk7CiByZXR1cm4gbmV3IEJsb2IocGFydHMse3R5cGU6J2FwcGxpY2F0aW9uL3BkZid9KTsKfQphc3luYyBmdW5jdGlvbiBzZW5kRW1haWxQZGYoKXsKIGNvbnN0IGJsb2I9bWFrZVBkZkJsb2IoKSwgd2hvPSgkKCdjbGllbnROYW1lJykudmFsdWV8fCdrbGllbnQnKS5yZXBsYWNlKC9bXlxwe0x9XHB7Tn1fLV0rL2d1LCdfJyk7CiBjb25zdCBmaWxlPW5ldyBGaWxlKFtibG9iXSxgT2ZlcnRhX01VTFRJU1lTVEVNU18ke3dob30ucGRmYCx7dHlwZTonYXBwbGljYXRpb24vcGRmJ30pOwogY29uc3Qgc3ViamVjdD0nT2ZlcnRhIE1VTFRJU1lTVEVNUyc7CiBjb25zdCBib2R5PSdEemllxYQgZG9icnksXG5cbncgemHFgsSFY3puaWt1IHByemVzecWCYW0gb2ZlcnTEmSBNVUxUSVNZU1RFTVMuXG5cblBvemRyYXdpYW1cbk1VTFRJU1lTVEVNUyc7CiB0cnl7CiAgIGlmKG5hdmlnYXRvci5zaGFyZSAmJiAoIW5hdmlnYXRvci5jYW5TaGFyZSB8fCBuYXZpZ2F0b3IuY2FuU2hhcmUoe2ZpbGVzOltmaWxlXX0pKSl7CiAgICAgYXdhaXQgbmF2aWdhdG9yLnNoYXJlKHt0aXRsZTpzdWJqZWN0LHRleHQ6Ym9keSxmaWxlczpbZmlsZV19KTsKICAgICBzYXZlSGlzdG9yeSgnV3lzxYJhbmEgLyB1ZG9zdMSZcG5pb25hJyk7CiAgIH1lbHNlewogICAgIGNvbnN0IGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnYScpO2EuaHJlZj1VUkwuY3JlYXRlT2JqZWN0VVJMKGJsb2IpO2EuZG93bmxvYWQ9ZmlsZS5uYW1lO2EuY2xpY2soKTsKICAgICBzZXRUaW1lb3V0KCgpPT5VUkwucmV2b2tlT2JqZWN0VVJMKGEuaHJlZiksMTAwMCk7CiAgICAgbG9jYXRpb24uaHJlZj1gbWFpbHRvOiR7ZW5jb2RlVVJJQ29tcG9uZW50KCQoJ2NsaWVudEVtYWlsJykudmFsdWV8fCcnKX0/c3ViamVjdD0ke2VuY29kZVVSSUNvbXBvbmVudChzdWJqZWN0KX0mYm9keT0ke2VuY29kZVVSSUNvbXBvbmVudChib2R5KydcblxuUERGIHpvc3RhxYIgcG9icmFueSBuYSB1cnrEhWR6ZW5pZSDigJQgZG/FgsSFY3ogZ28gZG8gd2lhZG9tb8WbY2kuJyl9YDsKICAgICBzYXZlSGlzdG9yeSgnUHJ6eWdvdG93YW5hIGRvIHd5c8WCYW5pYScpOwogICB9CiB9Y2F0Y2goZSl7IGlmKGUgJiYgZS5uYW1lIT09J0Fib3J0RXJyb3InKWFsZXJ0KCdOaWUgdWRhxYJvIHNpxJkgb3R3b3J6ecSHIHVkb3N0xJlwbmlhbmlhOiAnKyhlLm1lc3NhZ2V8fGUpKTsgfQp9CgpmdW5jdGlvbiBkb3dubG9hZEpwZygpewogcmVuZGVyKCk7CiBjb25zdCBhPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2EnKTsKIGNvbnN0IHdobz0oJCgnY2xpZW50TmFtZScpLnZhbHVlfHwna2xpZW50JykucmVwbGFjZSgvW15ccHtMfVxwe059Xy1dKy9ndSwnXycpOwogYS5kb3dubG9hZD1gT2ZlcnRhX01VTFRJU1lTVEVNU18ke3dob30uanBnYDsKIGEuaHJlZj1jYW52YXMudG9EYXRhVVJMKCdpbWFnZS9qcGVnJywwLjk2KTsKIGEuY2xpY2soKTsKfQokKCdhZGRJdGVtJykub25jbGljaz0oKT0+YWRkSXRlbSh7bmFtZTonJyxxdHk6MSx1bml0OidzenQuJyxwcmljZTowLGRpc2NvdW50OjB9KTsKJCgnZG93bmxvYWRKcGcnKS5vbmNsaWNrPWRvd25sb2FkSnBnOwokKCdwcmludEJ0bicpLm9uY2xpY2s9KCk9PntzYXZlSGlzdG9yeSgnVXR3b3J6b25hIC8gUERGJyk7d2luZG93LnByaW50KCl9OwokKCdlbWFpbEJ0bicpLm9uY2xpY2s9c2VuZEVtYWlsUGRmOwokKCdoaXN0b3J5U2F2ZUJ0bicpLm9uY2xpY2s9KCk9PnNhdmVIaXN0b3J5KCdVdHdvcnpvbmEnKTsKJCgnc2F2ZUJ0bicpLm9uY2xpY2s9c2F2ZTskKCdsb2FkQnRuJykub25jbGljaz1sb2FkOyQoJ2NsZWFyQnRuJykub25jbGljaz1jbGVhckFsbDsKc3RhdGVJZHMuZm9yRWFjaChpZD0+JChpZCkuYWRkRXZlbnRMaXN0ZW5lcignaW5wdXQnLHJlbmRlcikpOwokKCdkaXNjb3VudEVuYWJsZWQnKS5hZGRFdmVudExpc3RlbmVyKCdjaGFuZ2UnLCgpPT57JCgnZGlzY291bnQnKS5kaXNhYmxlZD0hJCgnZGlzY291bnRFbmFibGVkJykuY2hlY2tlZDtyZW5kZXIoKTt9KTsKd2luZG93LmFkZEV2ZW50TGlzdGVuZXIoJ2xvYWQnLCgpPT57CiAkKCdkYXRlJykudmFsdWU9bmV3IERhdGUoKS50b0lTT1N0cmluZygpLnNsaWNlKDAsMTApOwogLy8gU3RhcnQgd2l0aCB0aGUgbGFzdCBrbm93biBJUEnFmiBQQU4gb2ZmZXIgYXMgYSB1c2VmdWwgc2FtcGxlLgogJCgnY2xpZW50TmFtZScpLnZhbHVlPSdJUEnFmiBQQU4nOwogJCgnY2xpZW50QWRkcmVzcycpLnZhbHVlPSdaYWJyemUnOwogJCgnY2xpZW50RW1haWwnKS52YWx1ZT0nam9hbm5hLmtpamFzQGlwaXNwYW4uZWR1LnBsJzsKICQoJ3Njb3BlJykudmFsdWU9J0Rvc3Rhd2EgaSBtb250YcW8IGtsaW1hdHl6YWNqaSB0eXB1IHNwbGl0LlxuRMWCdWdvxZvEhyBpbnN0YWxhY2ppIDcgbS4nOwogJCgndmF0JykudmFsdWU9JzIzJzsKIGFkZEl0ZW0oe25hbWU6J1BhbmFzb25pYyBVWjI1JyxxdHk6Myx1bml0OidzenQuJyxwcmljZTozODUwLGRpc2NvdW50OjB9KTsKIHJlbmRlcigpO3JlbmRlckhpc3RvcnkoKTsKfSk7Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4K'), c=>c.charCodeAt(0)));
+let db,clients=[],devices=[],jobs=[],finances=[],tempIn='',tempOut='',tempJobPhotos=[],deviceClientFilter='';
+const $=s=>document.querySelector(s), E=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),uid=()=>crypto.randomUUID?crypto.randomUUID():Date.now()+'-'+Math.random();
+function toggleMenu(v){let on=v===undefined?!side.classList.contains('open'):v;side.classList.toggle('open',on);shade.classList.toggle('on',on)}
+document.querySelectorAll('.menu button[data-view]').forEach(b=>b.onclick=()=>{document.querySelectorAll('.menu button,.view').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.view).classList.add('on');headTitle.textContent=b.textContent.trim();toggleMenu(false);if(b.dataset.view==='offers'&&!offerFrame.srcdoc)offerFrame.srcdoc=OFFER_HTML})
+function rq(r){return new Promise((ok,no)=>{r.onsuccess=()=>ok(r.result);r.onerror=()=>no(r.error)})}
+
+
+const DEFAULT_APP_SETTINGS={companyName:'MULTISYSTEMS',companyNip:'5771898680',companyPhone:'502 980 619',companyEmail:'biuro@multisystems.com.pl',companyAddress:'Stepowa 36, 44-105 Gliwice',vat:'8',interval:'12',startTime:'08:00',duration:'120',reminderDays:'30',smsTemplate:'Dzień dobry {klient}, przypominamy o terminie: {data} — {typ}, urządzenie: {urzadzenie}. MULTISYSTEMS, tel. {telefon}'};
+function getAppSettings(){try{return {...DEFAULT_APP_SETTINGS,...JSON.parse(localStorage.getItem('multisystems_app_settings')||'{}')}}catch(e){return {...DEFAULT_APP_SETTINGS}}}
+function loadAppSettings(){let a=getAppSettings(),map={setCompanyName:'companyName',setCompanyNip:'companyNip',setCompanyPhone:'companyPhone',setCompanyEmail:'companyEmail',setCompanyAddress:'companyAddress',setVat:'vat',setInterval:'interval',setStartTime:'startTime',setDuration:'duration',setReminderDays:'reminderDays',setSmsTemplate:'smsTemplate'};Object.entries(map).forEach(([id,k])=>{let e=document.getElementById(id);if(e)e.value=a[k]??''})}
+function saveAppSettings(){let a=getAppSettings(),map={setCompanyName:'companyName',setCompanyNip:'companyNip',setCompanyPhone:'companyPhone',setCompanyEmail:'companyEmail',setCompanyAddress:'companyAddress',setVat:'vat',setInterval:'interval',setStartTime:'startTime',setDuration:'duration',setReminderDays:'reminderDays',setSmsTemplate:'smsTemplate'};Object.entries(map).forEach(([id,k])=>{let e=document.getElementById(id);if(e)a[k]=e.value});localStorage.setItem('multisystems_app_settings',JSON.stringify(a));applyCompanyBrand();setTimeout(()=>{let qv=document.getElementById('qqVat');if(qv&&!qv.dataset.ready){qv.value=getAppSettings().vat==='23'?'23':'8';qv.dataset.ready='1';calcQuickQuote()}},0);alert('Ustawienia zapisane.')}
+function smsText(data){let a=getAppSettings(),t=a.smsTemplate||DEFAULT_APP_SETTINGS.smsTemplate,vals={klient:data.client||'',data:data.date||'',typ:data.type||'',urzadzenie:data.device||'',firma:a.companyName||'MULTISYSTEMS',telefon:a.companyPhone||''};Object.entries(vals).forEach(([k,v])=>t=t.replaceAll('{'+k+'}',v));return t}
+function openSms(phone,text){let p=String(phone||'').replace(/[^\d+]/g,'');if(!p)return alert('Klient nie ma wpisanego numeru telefonu.');location.href='sms:'+p+'?body='+encodeURIComponent(text)}
+function sendJobSMS(id){let j=jobs.find(x=>x.id==id);if(!j)return;let c=clients.find(x=>x.id==j.clientId);openSms(c?.phone,smsText({client:c?.name,date:j.date,type:j.type,device:dname(j.deviceId)}))}
+function sendDeviceReviewSMS(id){let d=devices.find(x=>x.id==id);if(!d)return;let c=clients.find(x=>x.id==d.clientId);openSms(c?.phone,smsText({client:c?.name,date:d.nextService,type:'Przegląd',device:dname(id)}))}
+
+
+async function makeBackupPayload(){
+ await refresh();
+ return {format:'MULTISYSTEMS_PORTABLE_BACKUP',version:2,createdAt:new Date().toISOString(),data:{clients,devices,jobs,finances},settings:{
+  app:localStorage.getItem('multisystems_app_settings')||'',theme:localStorage.getItem('multisystems_theme')||'system',
+  googleClientId:localStorage.getItem('ms_google_client_id')||'',msClientId:localStorage.getItem('ms_ms_client_id')||'',msRedirect:localStorage.getItem('ms_ms_redirect')||''
+ }}
+}
+function downloadBlob(blob,name){let a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1500)}
+function utf8ToB64(str){let bytes=new TextEncoder().encode(str),bin='';for(let b of bytes)bin+=String.fromCharCode(b);return btoa(bin)}
+function b64ToUtf8(b64){let bin=atob(b64),bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);return new TextDecoder().decode(bytes)}
+async function exportPortableHTML(auto=false){
+ try{
+  let payload=await makeBackupPayload(),html='<!doctype html>\n'+document.documentElement.outerHTML;
+  html=html.replace(/<meta\s+name=["']multisystems-backup["'][^>]*>/i,'');
+  let encoded=utf8ToB64(JSON.stringify(payload));
+  html=html.replace('<head>','<head><meta name="multisystems-backup" content="'+encoded+'">');
+  let d=new Date().toISOString().slice(0,10),company=(getAppSettings().companyName||'MULTISYSTEMS').replace(/[\\/:*?"<>|]/g,'_');
+  downloadBlob(new Blob([html],{type:'text/html;charset=utf-8'}),company+'_backup_'+d+'.html');
+  localStorage.setItem('multisystems_last_weekly_backup',new Date().toISOString());updateWeeklyBackupStatus();
+  if(!auto)alert('Utworzono kopię HTML aplikacji z bazą danych.')
+ }catch(e){alert('Nie udało się utworzyć kopii HTML: '+(e.message||e))}
+}
+async function restoreBackupPayload(p,ask=true){
+ if(!p||p.format!=='MULTISYSTEMS_PORTABLE_BACKUP'||!p.data)throw new Error('Nieprawidłowa kopia aplikacji.');
+ if(ask&&!confirm('Wczytać dane z kopii? Obecna baza zostanie zastąpiona.'))return;
+ for(let name of ['clients','devices','jobs','finances']){
+  await new Promise((ok,no)=>{let r=db.transaction(name,'readwrite').objectStore(name).clear();r.onsuccess=()=>ok();r.onerror=()=>no(r.error)});
+  for(let o of (p.data[name]||[]))await put(name,o);
+ }
+ if(p.settings){if(p.settings.app)localStorage.setItem('multisystems_app_settings',p.settings.app);if(p.settings.theme)localStorage.setItem('multisystems_theme',p.settings.theme);if(p.settings.googleClientId)localStorage.setItem('ms_google_client_id',p.settings.googleClientId);if(p.settings.msClientId)localStorage.setItem('ms_ms_client_id',p.settings.msClientId);if(p.settings.msRedirect)localStorage.setItem('ms_ms_redirect',p.settings.msRedirect)}
+ await refresh();loadTheme();loadAppSettings();loadCloudSettings();applyCompanyBrand();if(ask)alert('Baza została wczytana z kopii HTML.')
+}
+async function importPortableHTML(file){
+ if(!file)return;
+ try{let txt=await file.text(),doc=new DOMParser().parseFromString(txt,'text/html'),meta=doc.querySelector('meta[name="multisystems-backup"]');if(!meta)throw new Error('Plik nie zawiera kopii bazy.');await restoreBackupPayload(JSON.parse(b64ToUtf8(meta.content)),true)}
+ catch(e){alert('Nie udało się wczytać kopii HTML: '+(e.message||e))}
+}
+async function importEmbeddedBackupIfPresent(){
+ let meta=document.querySelector('meta[name="multisystems-backup"]');if(!meta)return;
+ try{let p=JSON.parse(b64ToUtf8(meta.content));if(p?.format!=='MULTISYSTEMS_PORTABLE_BACKUP')return;if((clients.length+devices.length+jobs.length+finances.length)===0)await restoreBackupPayload(p,false)}catch(e){}
+}
+function saveWeeklyBackupSetting(){localStorage.setItem('multisystems_weekly_backup',setWeeklyBackup.checked?'1':'0');updateWeeklyBackupStatus()}
+function updateWeeklyBackupStatus(){
+ let e=document.getElementById('setWeeklyBackup'),st=document.getElementById('weeklyBackupStatus');if(!e||!st)return;
+ e.checked=localStorage.getItem('multisystems_weekly_backup')==='1';
+ let last=localStorage.getItem('multisystems_last_weekly_backup');
+ st.textContent=last?'Ostatnia kopia: '+new Date(last).toLocaleString('pl-PL'):'Nie wykonano jeszcze kopii automatycznej.'
+}
+function checkWeeklyBackup(){
+ updateWeeklyBackupStatus();if(localStorage.getItem('multisystems_weekly_backup')!=='1')return;
+ let last=localStorage.getItem('multisystems_last_weekly_backup'),due=!last||(Date.now()-new Date(last).getTime()>=7*24*60*60*1000);
+ if(due)setTimeout(()=>{if(confirm('Minął tydzień od ostatniego backupu. Pobrać teraz aktualną kopię aplikacji z bazą?'))exportPortableHTML(true)},700)
+}
+
+function applyCompanyBrand(){
+ let a=getAppSettings(),name=(a.companyName||'MULTISYSTEMS').trim()||'MULTISYSTEMS';
+ document.querySelectorAll('.brand,.logo').forEach(e=>e.textContent=name);
+ document.title=name+' Centrum';
+}
+
+function setTheme(v){let t=['dark','light','system'].includes(v)?v:'system';document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t==='system'?'light dark':t;localStorage.setItem('multisystems_theme',t);let el=document.getElementById('themeSelect');if(el&&el.value!==t)el.value=t}
+function loadTheme(){setTheme(localStorage.getItem('multisystems_theme')||'system')}
+async function clearEntireDatabase(){
+ let company=getAppSettings().companyName||'aplikacji';
+ if(!confirm('UWAGA: usunąć wszystkie dane aplikacji '+company+' z tego urządzenia?\n\nZostaną usunięci klienci, urządzenia, zlecenia, historia i finanse. Ustawienia pozostaną.'))return;
+ let code=prompt('Aby potwierdzić trwałe usunięcie danych, wpisz: USUŃ');
+ if(code!=='USUŃ')return alert('Anulowano. Dane nie zostały usunięte.');
+ try{
+  for(let name of ['clients','devices','jobs','finances'])await new Promise((ok,no)=>{let r=db.transaction(name,'readwrite').objectStore(name).clear();r.onsuccess=()=>ok();r.onerror=()=>no(r.error)});
+  deviceClientFilter='';
+  await refresh();alert('Dane aplikacji zostały wyczyszczone. Ustawienia pozostawiono bez zmian.')
+ }catch(e){alert('Nie udało się wyczyścić danych: '+(e.message||e))}
+}
+
+async function init(){
+ try{
+  db=await new Promise((ok,no)=>{
+   let r=indexedDB.open('multisystems_centrum',4);
+   r.onupgradeneeded=()=>{for(let s of ['clients','devices','jobs','finances'])if(!r.result.objectStoreNames.contains(s))r.result.createObjectStore(s,{keyPath:'id'})};
+   r.onsuccess=()=>ok(r.result); r.onerror=()=>no(r.error||new Error('Błąd IndexedDB')); r.onblocked=()=>no(new Error('Baza zablokowana'));
+  });
+  if(dbStatus){dbStatus.textContent='Baza lokalna działa prawidłowo.';dbStatus.style.display='none'}
+  await refresh();
+ }catch(e){
+  if(dbStatus){dbStatus.style.display='block';dbStatus.innerHTML='<b>Nie udało się uruchomić lokalnej bazy.</b><br>'+E(e.message||e)}
+  alert('Nie udało się uruchomić bazy lokalnej: '+(e.message||e));
+ }
+}
+async function all(s){return rq(db.transaction(s).objectStore(s).getAll())} async function put(s,o){return rq(db.transaction(s,'readwrite').objectStore(s).put(o))} async function rem(s,id){return rq(db.transaction(s,'readwrite').objectStore(s).delete(id))}
+async function refresh(){[clients,devices,jobs,finances]=await Promise.all(['clients','devices','jobs','finances'].map(all));render()}
+function cname(id){return clients.find(x=>x.id==id)?.name||'—'} function dname(id){let d=devices.find(x=>x.id==id);if(!d)return'—';return `${d.brand||'—'} | wew.: ${d.modelIn||d.model||'—'} | zew.: ${d.modelOut||'—'}`}
+function addMonths(v,n){if(!v)return'';let[y,m,d]=v.split('-').map(Number),x=new Date(y,m-1,1);x.setMonth(x.getMonth()+Number(n));x.setDate(Math.min(d,new Date(x.getFullYear(),x.getMonth()+1,0).getDate()));return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`}
+function fmt(n){return Number(n||0).toLocaleString('pl-PL',{minimumFractionDigits:2,maximumFractionDigits:2})+' zł'}
+function render(){kc.textContent=clients.length;kd.textContent=devices.length;kj.textContent=jobs.filter(j=>!['Wykonane','Anulowane'].includes(j.status)).length;let now=new Date();now.setHours(0,0,0,0);let lim=new Date(now);lim.setDate(lim.getDate()+30);kp.textContent=devices.filter(d=>d.nextService&&new Date(d.nextService)>=now&&new Date(d.nextService)<=lim).length;
+clientsRows.innerHTML=clients.map(c=>{let n=devices.filter(d=>d.clientId==c.id).length;return `<tr><td data-label="Klient"><button class="secondary" onclick="showClientDevices('${c.id}')"><b>${E(c.name)}</b></button></td><td data-label="Telefon">${E(c.phone)}</td><td data-label="E-mail">${E(c.email)}</td><td data-label="Adres">${E(c.address)} ${E(c.city)}</td><td data-label="Urządzenia"><button onclick="showClientDevices('${c.id}')">${n} ${n===1?'urządzenie':'urządzeń'}</button></td><td data-label="Akcje"><button onclick="editClient('${c.id}')">Edytuj</button> <button class="danger" onclick="deleteClient('${c.id}')">Usuń</button></td></tr>`}).join('')||'<tr><td>Brak klientów</td></tr>';
+let shownDevices=deviceClientFilter?devices.filter(d=>d.clientId==deviceClientFilter):devices;devicesRows.innerHTML=shownDevices.map(d=>`<tr><td data-label="Urządzenie"><span class="muted"><b>Jednostka wewnętrzna</b></span><br><b>${E(d.brand)} ${E(d.modelIn||d.model)}</b><br><br><span class="muted"><b>Jednostka zewnętrzna</b></span><br>${E(d.brand)} ${E(d.modelOut)}</td><td data-label="Moc"><b>${d.powerKw?E(d.powerKw)+" kW":"—"}</b></td><td data-label="Klient">${E(cname(d.clientId))}</td><td data-label="S/N"><span class="muted">S/N jednostki wewnętrznej</span><br>${E(d.serialIn)||'—'}<br><br><span class="muted">S/N jednostki zewnętrznej</span><br>${E(d.serialOut)||'—'}</td><td data-label="Uruchomienie">${E(d.startDate)}</td><td data-label="Cykl">${E(d.intervalMonths)} mies.</td><td data-label="Następny przegląd"><b>${E(d.nextService)}</b></td><td data-label="Zdjęcia">${(d.photoIn?1:0)+(d.photoOut?1:0)}</td><td data-label="Akcje"><button onclick="createReview('${d.id}')">+ Utwórz przegląd</button> <button onclick="editDevice('${d.id}')">Edytuj</button> <button class="danger" onclick="delItem('devices','${d.id}')">Usuń</button></td></tr>`).join('')||'<tr><td>Brak urządzeń</td></tr>';
+jobsRows.innerHTML=[...jobs].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(j=>`<tr><td data-label="Data">${E(j.date)}</td><td data-label="Typ">${E(j.type)}</td><td data-label="Klient">${E(cname(j.clientId))}</td><td data-label="Urządzenie">${E(dname(j.deviceId))}</td><td data-label="Status">${E(j.status)}</td><td data-label="Dochód / strata">${Number(j.profitLoss!==undefined?j.profitLoss:j.cost||0)>0?'+':''}${fmt(j.profitLoss!==undefined?j.profitLoss:j.cost||0)}</td><td data-label="Zdjęcia">${(j.photos||[]).length}</td><td data-label="Opis">${E(j.description)}</td><td data-label="Akcje"><button onclick="editJob('${j.id}')">Edytuj</button> ${j.type==='Przegląd'?`<button class="secondary" onclick="previewCompletedReview(\'${j.id}\')">👁 Podgląd</button> <button class="secondary" onclick="printReviewProtocol(\'${j.id}\')">📄 Protokół</button> <button class="secondary" onclick="emailReviewProtocol(\'${j.id}\')">✉ E-mail</button>`:''} <button class="secondary" onclick="sendJobSMS('${j.id}')">💬 SMS</button> ${!isDoneStatus(j.status)&&!isCancelledStatus(j.status)?`<button class="secondary" onclick="addGoogleCalendar('${j.id}')">Google Kalendarz</button> <button class="secondary" onclick="addOutlookCalendar('${j.id}')">Outlook</button>`:''} ${!isDoneStatus(j.status)?`<button onclick="setJobStatus('${j.id}','Wykonane')">✓ Wykonane</button>`:''} ${!isCancelledStatus(j.status)?`<button class="secondary" onclick="setJobStatus('${j.id}','Anulowane')">Anuluj</button>`:''} <button class="danger" onclick="delItem('jobs','${j.id}')">Usuń</button></td></tr>`).join('')||'<tr><td>Brak zleceń</td></tr>';
+renderCalendar();fillSelects();setupFinanceYears();renderFinance()}
+function openView(name,title){document.querySelectorAll('.menu button,.view').forEach(x=>x.classList.remove('on'));let b=document.querySelector(`.menu button[data-view="${name}"]`);if(b)b.classList.add('on');$('#'+name).classList.add('on');headTitle.textContent=title||b?.textContent.trim()||name;toggleMenu(false)}
+function showClientDevices(id){deviceClientFilter=id;let c=clients.find(x=>x.id==id);devicesTitle.textContent='Urządzenia — '+(c?.name||'klient');clearDeviceFilter.style.display='inline-block';openView('devices','Urządzenia klienta');render()}
+function clearClientDeviceFilter(){deviceClientFilter='';devicesTitle.textContent='Urządzenia';clearDeviceFilter.style.display='none';render()}
+
+function previewReview(id){
+ let ha=reviewPreviewDlg.querySelector('.history-actions');if(ha)ha.remove();
+ reviewPreviewSms.style.display='';reviewPreviewCreate.style.display='';
+ let d=devices.find(x=>x.id==id);if(!d)return;let c=clients.find(x=>x.id==d.clientId);
+ reviewPreviewBody.innerHTML=`<p><b>Termin:</b> ${E(d.nextService)}</p><p><b>Klient:</b> ${E(c?.name||'—')}</p><p><b>Telefon:</b> ${E(c?.phone||'—')}</p><p><b>Adres:</b> ${E([c?.address,c?.city].filter(Boolean).join(', ')||'—')}</p><p><b>Jednostka wewnętrzna:</b> ${E(d.brand)} ${E(d.modelIn||d.model||'')}</p><p><b>Jednostka zewnętrzna:</b> ${E(d.brand)} ${E(d.modelOut||'—')}</p><p><b>Moc:</b> ${d.powerKw?E(d.powerKw)+' kW':'—'}</p><p><b>Cykl:</b> ${E(d.intervalMonths)} mies.</p>`;
+ reviewPreviewSms.onclick=()=>sendDeviceReviewSMS(id);reviewPreviewCreate.onclick=()=>{reviewPreviewDlg.close();createReview(id)};reviewPreviewDlg.showModal()
+}
+
+
+function previewCompletedReview(id){
+ let j=jobs.find(x=>x.id==id);if(!j)return;let d=devices.find(x=>x.id==j.deviceId)||{},c=clients.find(x=>x.id==j.clientId)||{};
+ let checks=[['Filtr',j.rpFilter],['Wymiennik zewnętrzny',j.rpOutdoorExchanger],['Szczelność',j.rpTightness],['Połączenia elektryczne',j.rpElectrical],['Odpływ skroplin',j.rpDrain],['Pompka skroplin',j.rpPump],['Izolacja',j.rpInsulation],['RCD',j.rpRcd],['Test chłodzenia',j.rpCoolTest],['Test grzania',j.rpHeatTest],['Dezynfekcja',j.rpDisinfection],['Wymiennik wewnętrzny',j.rpIndoorExchanger],['Wibroizolacja',j.rpVibration]];
+ reviewPreviewBody.innerHTML=`<p><b>Status:</b> ${E(j.status||'—')}</p><p><b>Data:</b> ${E(j.date||'—')}</p><p><b>Klient:</b> ${E(c.name||'—')}</p><p><b>Adres:</b> ${E([c.address,c.city].filter(Boolean).join(', ')||'—')}</p><p><b>Urządzenie:</b> ${E(dname(d.id))}</p><p><b>ΔT:</b> ${E(j.rpDeltaT||'—')} °C &nbsp; <b>Napięcie:</b> ${E(j.rpVoltage||'—')} V</p><hr>${checks.map(x=>`<div>${x[1]==='TAK'?'☑':'☐'} ${E(x[0])}</div>`).join('')}<p><b>Uwagi:</b><br>${E(j.rpNotes||j.description||'Brak')}</p>`;
+ reviewPreviewSms.style.display='none';reviewPreviewCreate.style.display='none';
+ let acts=reviewPreviewDlg.querySelector('.actions'),old=acts.querySelector('.history-actions');if(old)old.remove();
+ let box=document.createElement('span');box.className='history-actions';box.innerHTML=`<button type="button" class="secondary" onclick="reviewPreviewDlg.close();printReviewProtocol('${j.id}')">📄 Protokół / PDF</button> <button type="button" class="secondary" onclick="reviewPreviewDlg.close();emailReviewProtocol('${j.id}')">✉ E-mail</button>`;acts.prepend(box);
+ reviewPreviewDlg.showModal()
+}
+function renderReviewHistory(){
+ let el=document.getElementById('reviewHistoryRows');if(!el)return;
+ let a=jobs.filter(j=>j.type==='Przegląd'&&isDoneStatus(j.status)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+ el.innerHTML=a.length?a.map(j=>`<div class="calendar-item"><b>${E(j.date||'—')}</b><div><b>${E(cname(j.clientId))}</b><br><span class="muted">${E(dname(j.deviceId))}<br>Status: ${E(j.status)}</span></div><div class="actions"><button onclick="previewCompletedReview('${j.id}')">👁 Podgląd</button><button class="secondary" onclick="editJob('${j.id}')">✏ Edytuj</button><button class="danger" onclick="deleteReviewHistory('${j.id}')">🗑 Usuń</button></div></div>`).join(''):'<span class="muted">Brak wykonanych przeglądów.</span>'
+}
+async function deleteReviewHistory(id){
+ let j=jobs.find(x=>x.id==id);if(!j)return;
+ let c=cname(j.clientId);
+ if(!confirm('Usunąć wykonany przegląd z dnia '+(j.date||'—')+' dla klienta '+c+'?\\n\\nUsunięty zostanie zapis przeglądu wraz z jego protokołem i zdjęciami.'))return;
+ await rem('jobs',id);await refresh()
+}
+function renderCalendar(){
+ renderReviewHistory();
+
+ // Only genuinely open jobs belong in the calendar.
+ let planned=jobs.filter(j=>!isDoneStatus(j.status)&&!isCancelledStatus(j.status)&&j.date).map(j=>({
+   date:j.date,type:j.type||'Zlecenie',clientId:j.clientId,deviceId:j.deviceId,jobId:j.id,status:j.status||'Zaplanowane'
+ }));
+
+ // Sekcja „zaplanowane działania” pokazuje wyłącznie faktycznie utworzone zlecenia.
+ // Automatycznie wyliczony termin nextService urządzenia jest przypomnieniem serwisowym,
+ // a nie zaplanowanym działaniem — nie dodajemy go tutaj.
+
+ planned.sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+
+ let item=x=>{
+   let d=devices.find(z=>String(z.id)===String(x.deviceId));
+   let details=d?`${E(d.brand||'')} ${E(d.modelIn||d.model||'')}`:'';
+   let action='';
+   if(x.jobId){
+     action=`<div class="actions"><button onclick="editJob('${x.jobId}')">Edytuj</button><button class="secondary" onclick="setJobStatus('${x.jobId}','Wykonane')">✓ Wykonane</button></div>`;
+   }else if(x.deviceReview){
+     action=`<button onclick="createReview('${x.deviceId}')">Utwórz przegląd</button>`;
+   }
+   return `<div class="calendar-item"><b>${E(x.date)}</b><div><b>${E(x.type)}</b> — ${E(cname(x.clientId))}<br><span class="muted">${E(x.status)}${details?' · '+details:''}</span></div>${action}</div>`
+ };
+
+ let reviews=planned.filter(x=>x.type==='Przegląd');
+ let services=planned.filter(x=>x.type==='Serwis');
+ let installations=planned.filter(x=>x.type==='Instalacja');
+ let empty='<span class="muted">Brak zaplanowanych pozycji.</span>';
+ document.getElementById('calendarReviews').innerHTML=reviews.length?reviews.map(item).join(''):empty;
+ document.getElementById('calendarServices').innerHTML=services.length?services.map(item).join(''):empty;
+ document.getElementById('calendarInstallations').innerHTML=installations.length?installations.map(item).join(''):empty;
+
+ let upcoming=planned.slice(0,5);
+ dashCal.innerHTML=upcoming.length?upcoming.map(x=>`<div class="calendar-item"><b>${E(x.date)}</b><div><b>${E(x.type)}</b> — ${E(cname(x.clientId))}<br><span class="muted">${E(x.status)}</span></div>${x.jobId?`<button class="secondary" onclick="setJobStatus('${x.jobId}','Wykonane')">✓ Wykonane</button>`:''}</div>`).join(''):'<span class="muted">Brak zaplanowanych działań.</span>'
+}
+function opts(){return '<option value="">Wybierz klienta…</option>'+clients.map(c=>`<option value="${c.id}">${E(c.name)}</option>`).join('')} function fillSelects(){deviceForm.clientId.innerHTML=opts();jobForm.clientId.innerHTML=opts();financeForm.clientId.innerHTML=opts()}
+function fillJobDevices(sel=''){let c=jobForm.clientId.value;jobForm.deviceId.innerHTML='<option value="">Wybierz urządzenie…</option>'+devices.filter(d=>!c||d.clientId==c).map(d=>`<option value="${d.id}">${E(dname(d.id))}</option>`).join('');jobForm.deviceId.value=sel}
+function fillFinanceDevices(sel=''){let c=financeForm.clientId.value;financeForm.deviceId.innerHTML='<option value="">Wybierz urządzenie…</option>'+devices.filter(d=>!c||d.clientId==c).map(d=>`<option value="${d.id}">${E(dname(d.id))}</option>`).join('');financeForm.deviceId.value=sel}
+function load(f,o){[...f.elements].forEach(e=>{if(e.name)e.value=o?.[e.name]??''})}
+function editClient(id=''){let o=clients.find(x=>x.id==id)||{};load(clientForm,o);clientHead.textContent=id?'Edytuj klienta':'Nowy klient';clientDlg.showModal()}
+function previewNext(){deviceForm.nextService.value=addMonths(deviceForm.startDate.value,deviceForm.intervalMonths.value)}
+function editDevice(id=''){fillSelects();let a=getAppSettings(),o=devices.find(x=>x.id==id)||{intervalMonths:a.interval||'12'};load(deviceForm,o);tempIn=o.photoIn||'';tempOut=o.photoOut||'';renderDevicePhotos();if(!id)previewNext();deviceHead.textContent=id?'Edytuj urządzenie':'Nowe urządzenie';deviceDlg.showModal()}
+function renderDevicePhotos(){photoIn.innerHTML=tempIn?photoHTML(tempIn,"tempIn='' ;renderDevicePhotos()"):'';photoOut.innerHTML=tempOut?photoHTML(tempOut,"tempOut='' ;renderDevicePhotos()"):''}
+function photoHTML(src,act){return `<div class="photo"><img src="${src}"><button type="button" onclick="${act}">✕</button></div>`}
+async function fileData(file,max=1400,q=.78){return new Promise((ok,no)=>{let r=new FileReader();r.onload=()=>{let im=new Image();im.onload=()=>{let s=Math.min(1,max/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok(c.toDataURL('image/jpeg',q))};im.onerror=no;im.src=r.result};r.onerror=no;r.readAsDataURL(file)})}
+camIn.onchange=async()=>{if(camIn.files[0]){tempIn=await fileData(camIn.files[0]);renderDevicePhotos()}};
+camOut.onchange=async()=>{if(camOut.files[0]){tempOut=await fileData(camOut.files[0]);renderDevicePhotos()}};
+galleryIn.onchange=async()=>{if(galleryIn.files[0]){tempIn=await fileData(galleryIn.files[0]);renderDevicePhotos();galleryIn.value=''}};
+galleryOut.onchange=async()=>{if(galleryOut.files[0]){tempOut=await fileData(galleryOut.files[0]);renderDevicePhotos();galleryOut.value=''}}
+async function tryOCR(which){let src=which==='in'?tempIn:tempOut;if(!src)return alert('Najpierw zrób lub wybierz zdjęcie tabliczki.');if(!('TextDetector' in window))return alert('Zdjęcie jest wczytane lokalnie, ale ta przeglądarka nie udostępnia wbudowanego OCR TextDetector. Zdjęcie zostanie zapisane przy urządzeniu; model i S/N można wpisać ręcznie.');try{let img=new Image();img.src=src;await img.decode();let det=new TextDetector();let blocks=await det.detect(img),txt=blocks.map(x=>x.rawValue).join(' ');let sn=(txt.match(/(?:S\/?N|SERIAL(?:\s*NO\.?)?)\s*[:#-]?\s*([A-Z0-9-]{5,})/i)||[])[1]||'';let model=(txt.match(/(?:MODEL|TYPE)\s*[:#-]?\s*([A-Z0-9._/-]{4,})/i)||[])[1]||'';if(which==='in'){if(model)deviceForm.modelIn.value=model;if(sn)deviceForm.serialIn.value=sn}else{if(model)deviceForm.modelOut.value=model;if(sn)deviceForm.serialOut.value=sn}alert(model||sn?'Rozpoznano dane. Sprawdź je przed zapisem.':'Nie udało się pewnie znaleźć modelu/SN. Wpisz ręcznie.')}catch(e){alert('Nie udało się odczytać tabliczki. Zdjęcie pozostaje zapisane.')}}
+
+function updateJobTypeUI(){
+ let type=jobForm?.querySelector('[name="type"]')?.value||'';
+ let box=document.getElementById('reviewProtocolFields');
+ if(box)box.style.display=type==='Przegląd'?'':'none';
+ document.querySelectorAll('[data-review-only]').forEach(el=>el.style.display=type==='Przegląd'?'':'none');
+}
+function editJob(id=''){fillSelects();let o=jobs.find(x=>x.id==id)||{date:new Date().toISOString().slice(0,10),type:'Instalacja',status:'Zaplanowane',invoiceMode:'8'};if(o.profitLoss===undefined&&o.cost!==undefined)o={...o,profitLoss:o.cost};load(jobForm,o);['rpFilter','rpOutdoorExchanger','rpTightness','rpElectrical','rpDrain','rpPump','rpInsulation','rpRcd','rpCoolTest','rpHeatTest','rpDisinfection','rpIndoorExchanger','rpVibration'].forEach(n=>{let el=jobForm.querySelector('[name="'+n+'"]');if(el)el.checked=o[n]==='TAK'});fillJobDevices(o.deviceId||'');tempJobPhotos=[...(o.photos||[])];renderJobPhotos();jobHead.textContent=id?'Edytuj zlecenie':'Nowe zlecenie';if(o.jobRevenue!==undefined||!id)calcJobSettlement();updateJobTypeUI();jobDlg.showModal()}
+jobForm.querySelector('[name="type"]').addEventListener('change',updateJobTypeUI);
+jobPhotosInput.onchange=async()=>{for(let f of jobPhotosInput.files)tempJobPhotos.push(await fileData(f));renderJobPhotos();jobPhotosInput.value=''}
+function renderJobPhotos(){jobPhotos.innerHTML=tempJobPhotos.map((p,i)=>photoHTML(p,`tempJobPhotos.splice(${i},1);renderJobPhotos()`)).join('')}
+function createReview(id){
+ let d=devices.find(x=>x.id==id);if(!d)return;
+ fillSelects();
+ load(jobForm,{id:'',type:'Przegląd',status:'Zaplanowane',date:d.nextService||new Date().toISOString().slice(0,10),clientId:d.clientId,deviceId:d.id,invoiceMode:'8',amountMode:'gross',jobRevenue:'',jobCosts:'',jobHelper:'',profitLoss:'0'});
+ jobForm.clientId.value=d.clientId;fillJobDevices(d.id);jobForm.deviceId.value=d.id;
+ tempJobPhotos=[];renderJobPhotos();calcJobSettlement();updateJobTypeUI();jobDlg.showModal()
+}
+clientForm.onsubmit=async e=>{e.preventDefault();try{let o=Object.fromEntries(new FormData(clientForm));o.id=o.id||uid();await put('clients',o);clientDlg.close();clientForm.reset();await refresh()}catch(err){alert('Nie udało się zapisać klienta: '+(err.message||err))}}
+deviceForm.onsubmit=async e=>{e.preventDefault();let old=devices.find(x=>x.id==deviceForm.id.value)||{},o=Object.fromEntries(new FormData(deviceForm));o.id=o.id||uid();o.nextService=addMonths(o.startDate,o.intervalMonths);o.photoIn=tempIn;o.photoOut=tempOut;await put('devices',{...old,...o});deviceDlg.close();await refresh()}
+
+function reviewProtocolHTML(j){
+ let c=clients.find(x=>x.id==j.clientId)||{},d=devices.find(x=>x.id==j.deviceId)||{},a=getAppSettings();
+ let yn=v=>E(v||'—'), val=v=>E(v||'—');
+ let checks=[
+ ['Czyszczenie filtra siatkowego powietrza',j.rpFilter],
+ ['Umycie wymiennika ciepła w jednostce zewnętrznej',j.rpOutdoorExchanger],
+ ['Sprawdzenie szczelności instalacji (połączeń kielichowych)',j.rpTightness],
+ ['Dokręcenie połączeń elektrycznych w jednostkach wew. oraz zew.',j.rpElectrical],
+ ['Sprawdzenie drożności odprowadzenia skroplin',j.rpDrain],
+ ['Sprawdzenie poprawności działania pompek skroplin',j.rpPump],
+ ['Kontrola stanu izolacji termicznej rurociągów',j.rpInsulation]
+ ];
+ let extra=[
+ ['Odgrzybianie i dezynfekcja wymiennika w jednostce wewnętrznej',j.rpDisinfection],
+ ['Umycie wymiennika w jednostce wewnętrznej',j.rpIndoorExchanger],
+ ['Sprawdzenie stanu podkładek wibroizolacyjnych jednostki zewnętrznej',j.rpVibration]
+ ];
+ return `<!doctype html><html><head><meta charset="utf-8"><title>Protokół przeglądu - ${E(c.name||'klient')}</title>
+ <style>@page{size:A4;margin:10mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111;font-size:10px;margin:0}.brand{font-size:21px;font-weight:800;color:#a47a00}.owner{font-size:11px;color:#a47a00;margin-left:25px}.title{text-align:center;font-size:17px;font-weight:800;margin:-18px 0 34px}.h{font-weight:800;font-size:11px;margin:12px 0 4px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #555;padding:5px;vertical-align:top}th{background:#eee}.line{border-bottom:1px dotted #888;min-height:20px;padding:3px}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checks td:first-child{width:82%}.notes{height:90px}.sign{display:grid;grid-template-columns:1fr .55fr 1fr;gap:35px;margin-top:30px;text-align:center}.sigline{border-bottom:1px dotted #777;height:34px}.muted{font-size:8px;color:#555}@media print{button{display:none}}</style></head><body>
+ <div class="brand">Multisystems</div><div class="owner">Rafał Jagielski</div>
+ <div class="title">Protokół przeglądu okresowego klimatyzacji</div>
+ <div class="h">ADRES INSTALACJI:</div><div class="line">${E([c.address,c.city].filter(Boolean).join(', '))}</div>
+ <div class="h">DANE FIRMY INSTALACYJNEJ:</div><table><tr><th>NAZWA I ADRES</th><th>IMIĘ I NAZWISKO SERWISANTA</th><th>TELEFON</th></tr><tr><td>${E(a.companyName||'')}<br>${E(a.companyAddress||'')}</td><td>${E(a.serviceTechnician||'Rafał Jagielski')}</td><td>${E(a.companyPhone||'')}</td></tr></table>
+ <div class="h">ZESTAWIENIE URZĄDZEŃ:</div><table><tr><th>MODELE URZĄDZEŃ</th><th>NUMER SERYJNY</th></tr><tr><td>Wewnętrzna: ${E(d.brand||'')} ${E(d.modelIn||d.model||'—')}<br>Zewnętrzna: ${E(d.brand||'')} ${E(d.modelOut||'—')}</td><td>Wewnętrzna: ${E(d.serialIn||'—')}<br>Zewnętrzna: ${E(d.serialOut||'—')}</td></tr></table>
+ <div class="twocol" style="margin-top:10px"><table><tr><td>Długość instalacji freonowej (m)</td><td>${val(j.rpFreonLength)}</td></tr><tr><td>Różnica poziomów skraplacz-parownik (m)</td><td>${val(j.rpLevelDiff)}</td></tr><tr><td>Pomiar napięcia zasilającego (V)</td><td>${val(j.rpVoltage)}</td></tr></table>
+ <table><tr><td>TEST zabezpieczenia różnicowo-prądowego</td><td>${yn(j.rpRcd)}</td></tr><tr><td>Pomieszczenie klimatyzowane (m²)</td><td>${val(j.rpRoomArea)}</td></tr><tr><td>Numer certyfikatu serwisanta F-GAZ</td><td>${val(j.rpFgas)}</td></tr></table></div>
+ <div class="h">Lista wymaganych czynności wykonanych w czasie przeglądu okresowego:</div><table class="checks">${checks.map(x=>`<tr><td>${x[0]}</td><td><b>${yn(x[1])}</b></td></tr>`).join('')}</table>
+ <table style="margin-top:8px"><tr><td>Pomiar ΔT powietrza w czasie pracy jednostki wewnętrznej</td><td>${val(j.rpDeltaT)} °C</td></tr><tr><td>Tryb testowy w chłodzeniu: ΔT &gt; 8 °C</td><td><b>${yn(j.rpCoolTest)}</b></td></tr><tr><td>Tryb testowy w grzaniu: ΔT &gt; 14 °C</td><td><b>${yn(j.rpHeatTest)}</b></td></tr></table>
+ <div class="h">Lista dodatkowych czynności wykonanych w czasie przeglądu okresowego:</div><table class="checks">${extra.map(x=>`<tr><td>${x[0]}</td><td><b>${yn(x[1])}</b></td></tr>`).join('')}</table>
+ <div class="h">UWAGI:</div><div class="notes" style="border:1px solid #555;padding:6px">${E(j.rpNotes||j.description||'')}</div>
+ <div class="sign"><div><b>Podpis osoby wykonującej przegląd:</b><div class="sigline"></div></div><div><b>DATA PRZEGLĄDU:</b><div class="sigline">${E(j.date||'')}</div></div><div><b>Podpis użytkownika:</b><div class="sigline"></div></div></div>
+ </body></html>`
+}
+function currentJobObject(){
+ let old=jobs.find(x=>x.id==jobForm.id.value)||{},o=Object.fromEntries(new FormData(jobForm));
+ let rp=['rpFilter','rpOutdoorExchanger','rpTightness','rpElectrical','rpDrain','rpPump','rpInsulation','rpRcd','rpCoolTest','rpHeatTest','rpDisinfection','rpIndoorExchanger','rpVibration'];
+ rp.forEach(n=>o[n]=jobForm.querySelector('[name="'+n+'"]')?.checked?'TAK':'NIE');
+ return {...old,...o}
+}
+function openProtocolPrint(j){
+ if(!j||j.type!=='Przegląd')return alert('Protokół jest dostępny dla zlecenia typu Przegląd.');
+ let w=window.open('','_blank');if(!w)return alert('Przeglądarka zablokowała nowe okno.');
+ w.document.open();w.document.write(reviewProtocolHTML(j));w.document.close();setTimeout(()=>w.print(),350)
+}
+function printCurrentReviewProtocol(){openProtocolPrint(currentJobObject())}
+function printReviewProtocol(id){openProtocolPrint(jobs.find(x=>x.id==id))}
+function protocolEmail(j){
+ if(!j||j.type!=='Przegląd')return alert('E-mail z protokołem jest dostępny dla przeglądu.');
+ let c=clients.find(x=>x.id==j.clientId)||{},a=getAppSettings();
+ let subject='Protokół przeglądu klimatyzacji - '+(j.date||'');
+ let body='Dzień dobry '+(c.name||'')+',\n\nprzesyłam protokół przeglądu klimatyzacji z dnia '+(j.date||'')+'.\n\n'+(a.companyName||'MULTISYSTEMS')+'\n'+(a.companyPhone||'');
+ let mailto='mailto:'+encodeURIComponent(c.email||'')+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+ window.location.href=mailto;
+}
+function emailCurrentReviewProtocol(){protocolEmail(currentJobObject())}
+function emailReviewProtocol(id){protocolEmail(jobs.find(x=>x.id==id))}
+function calcJobSettlement(){
+ let vat=Number(invoiceMode?.value||0)/100,mode=amountMode?.value||'gross';
+ let enteredRevenue=Number(jobRevenue?.value||0),enteredCosts=Number(jobCosts?.value||0),helper=Number(jobHelper?.value||0);
+ let gross=mode==='net'?enteredRevenue*(1+vat):enteredRevenue;
+ let costGross=mode==='net'?enteredCosts*(1+vat):enteredCosts;
+ let rev=vat?gross/(1+vat):gross,cost=vat?costGross/(1+vat):costGross;
+ let income=rev-cost,health=income*.09,pit=income*.12,pitDue=pit-health,net=income-pitDue-health;
+ let vatSales=gross-rev,vatCost=costGross-cost,vatDue=vatSales-vatCost,finalNet=net-helper;
+ if(jobRevenueLabel)jobRevenueLabel.textContent='Faktura / przychód '+(mode==='net'?'netto':'brutto')+' [zł]';
+ if(jobCostsLabel)jobCostsLabel.textContent='Koszty '+(mode==='net'?'netto':'brutto')+' [zł]';
+ jcRevenueNet.textContent=fmt(rev);jcCostsNet.textContent=fmt(cost);jcIncome.textContent=fmt(income);jcHealth.textContent=fmt(health);jcPit.textContent=fmt(pit);jcPitDue.textContent=fmt(pitDue);jcNet.textContent=fmt(net);jcVatSales.textContent=fmt(vatSales);jcVatCosts.textContent=fmt(vatCost);jcVatDue.textContent=fmt(vatDue);jobProfitLoss.value=finalNet.toFixed(2)
+}
+['invoiceMode','jobRevenue','jobCosts','jobHelper'].forEach(id=>document.getElementById(id)?.addEventListener('input',calcJobSettlement));
+function jobSettlementValue(j){
+ let vat=Number(j.invoiceMode||0)/100,mode=j.amountMode||'gross';
+ let er=Number(j.jobRevenue||0),ec=Number(j.jobCosts||0),helper=Number(j.jobHelper||0);
+ let gross=mode==='net'?er*(1+vat):er,costGross=mode==='net'?ec*(1+vat):ec;
+ let rev=vat?gross/(1+vat):gross,cost=vat?costGross/(1+vat):costGross;
+ let income=rev-cost,health=income*.09,pit=income*.12,pitDue=pit-health,net=income-pitDue-health;
+ return net-helper
+}
+function isDoneStatus(v){return ['wykonane','completed','zakończone','zrealizowane'].includes(String(v||'').trim().toLowerCase())}
+function isCancelledStatus(v){return ['anulowane','cancelled','canceled'].includes(String(v||'').trim().toLowerCase())}
+async function setJobStatus(id,status){
+ let j=jobs.find(x=>x.id==id);if(!j)return;
+ if(status==='Wykonane'){
+   let hasCalc=j.jobRevenue!==undefined||j.jobCosts!==undefined||j.jobHelper!==undefined;
+   if(hasCalc)j.profitLoss=jobSettlementValue(j).toFixed(2);
+ }
+ j={...j,status};
+ await put('jobs',j);
+ if(status==='Wykonane'&&j.type==='Przegląd'&&j.deviceId){
+   let d=devices.find(x=>x.id==j.deviceId);if(d){d.nextService=addMonths(j.date,d.intervalMonths||12);await put('devices',d)}
+ }
+ await refresh()
+}
+document.getElementById('amountMode')?.addEventListener('change',calcJobSettlement);
+jobForm.onsubmit=async e=>{e.preventDefault();let old=jobs.find(x=>x.id==jobForm.id.value)||{},o=Object.fromEntries(new FormData(jobForm));const rpChecks=['rpFilter','rpOutdoorExchanger','rpTightness','rpElectrical','rpDrain','rpPump','rpInsulation','rpRcd','rpCoolTest','rpHeatTest','rpDisinfection','rpIndoorExchanger','rpVibration'];if(o.type==='Przegląd')rpChecks.forEach(n=>{let el=jobForm.querySelector('[name="'+n+'"]');o[n]=el&&el.checked?'TAK':'NIE'});o.id=o.id||uid();o.photos=tempJobPhotos;delete old.cost;if(isDoneStatus(o.status))o.profitLoss=jobSettlementValue(o).toFixed(2);await put('jobs',{...old,...o});if(o.type==='Przegląd'&&isDoneStatus(o.status)&&o.deviceId){let d=devices.find(x=>x.id==o.deviceId);if(d){d.nextService=addMonths(o.date,d.intervalMonths||12);await put('devices',d)}}jobDlg.close();await refresh()}
+async function delItem(s,id){if(confirm('Usunąć wpis?')){await rem(s,id);await refresh()}} async function deleteClient(id){
+ let c=clients.find(x=>x.id==id);if(!c)return;
+ let devs=devices.filter(d=>d.clientId==id),devIds=new Set(devs.map(d=>String(d.id)));
+ let relatedJobs=jobs.filter(j=>j.clientId==id||devIds.has(String(j.deviceId)));
+ let relatedFin=finances.filter(f=>f.clientId==id||devIds.has(String(f.deviceId))||relatedJobs.some(j=>String(j.id)===String(f.jobId)));
+ let msg='Usunąć klienta „'+(c.name||'bez nazwy')+'” razem z całą jego historią?\n\n'+
+   'Urządzenia: '+devs.length+'\nZlecenia / przeglądy / serwisy: '+relatedJobs.length+'\nWpisy finansowe: '+relatedFin.length+
+   '\n\nTej operacji nie można cofnąć.';
+ if(!confirm(msg))return;
+ try{
+   for(let f of relatedFin)await rem('finances',f.id);
+   for(let j of relatedJobs)await rem('jobs',j.id);
+   for(let d of devs)await rem('devices',d.id);
+   await rem('clients',id);
+   if(String(deviceClientFilter||'')===String(id))deviceClientFilter='';
+   await refresh();
+   alert('Klient oraz wszystkie jego powiązane dane zostały usunięte.');
+ }catch(e){alert('Nie udało się usunąć klienta i jego danych: '+(e.message||e))}
+}
+function qn(id){return Math.max(0,Number(document.getElementById(id)?.value||0))}
+function calcQuickQuote(){
+ let vat=Number(document.getElementById('qqVat')?.value||8)/100,mode=document.getElementById('qqMode')?.value||'gross';
+ let invoice=qn('qqInvoice'),ac=qn('qqAc'),materials=qn('qqMaterials'),labor=qn('qqLabor'),helper=qn('qqHelper');
+ let gross=mode==='net'?invoice*(1+vat):invoice;
+ let acGross=mode==='net'?ac*(1+vat):ac,materialsGross=mode==='net'?materials*(1+vat):materials,laborGross=mode==='net'?labor*(1+vat):labor;
+ let costsGross=acGross+materialsGross+laborGross;
+ let rev=gross/(1+vat),cost=costsGross/(1+vat),income=rev-cost;
+ let taxable=Math.max(0,income),health=taxable*.09,pit=taxable*.12,pitDue=Math.max(0,pit-health);
+ let vatSales=gross-rev,vatCosts=costsGross-cost,vatDue=vatSales-vatCosts;
+ let net=income-pitDue-health,finalNet=net-helper;
+ let suffix=mode==='net'?'netto':'brutto';
+ let labels={qqInvoiceLabel:'Cena całej faktury '+suffix+' [zł]',qqAcLabel:'Cena klimatyzatora '+suffix+' [zł]',qqMaterialsLabel:'Materiały '+suffix+' [zł]',qqLaborLabel:'Robocizna / inne koszty '+suffix+' [zł]'};
+ Object.entries(labels).forEach(([id,v])=>{let e=document.getElementById(id);if(e)e.textContent=v});
+ let vals={qqGross:gross,qqRevenueNet:rev,qqCostsNet:cost,qqIncome:income,qqVatDue:vatDue,qqHealth:health,qqPitDue:pitDue,qqHelperOut:helper,qqFinal:finalNet,qqVatSales:vatSales,qqVatCosts:vatCosts,qqPit:pit,qqCostsGross:costsGross};
+ Object.entries(vals).forEach(([id,v])=>{let e=document.getElementById(id);if(e)e.textContent=fmt(v)});
+}
+function clearQuickQuote(){
+ ['qqInvoice','qqAc','qqMaterials','qqLabor','qqHelper'].forEach(id=>{let e=document.getElementById(id);if(e)e.value=''});
+ let v=document.getElementById('qqVat'),m=document.getElementById('qqMode');if(v)v.value=getAppSettings().vat==='23'?'23':'8';if(m)m.value='gross';calcQuickQuote()
+}
+['qqInvoice','qqAc','qqMaterials','qqLabor','qqHelper'].forEach(id=>document.getElementById(id)?.addEventListener('input',calcQuickQuote));
+function calcFinance(o){let vat=Number(o.vat||0)/100,g=Number(o.gross||0),cg=Number(o.costGross||0),labor=Number(o.labor||0),rev=g/(1+vat),cost=cg/(1+vat),income=rev-cost,health=income*.09,pit=income*.12,pitDue=pit-health,net=income-pitDue-health-labor,vatSales=g-rev,vatCost=cg-cost;return{rev,cost,income,health,pit,pitDue,net,vatSales,vatCost,vatDue:vatSales-vatCost}}
+function editFinance(id=''){fillSelects();let o=finances.find(x=>x.id==id)||{date:new Date().toISOString().slice(0,10),vat:'8'};load(financeForm,o);fillFinanceDevices(o.deviceId||'');financePreview();financeDlg.showModal()}
+function financePreview(){let o=Object.fromEntries(new FormData(financeForm)),x=calcFinance(o);financePreviewBox.innerHTML=`<div class="calc"><div>Przychód netto<br><span class="money">${fmt(x.rev)}</span></div><div>Koszty netto<br><span class="money">${fmt(x.cost)}</span></div><div>Dochód<br><span class="money">${fmt(x.income)}</span></div><div>Zdrowotna 9%<br><b>${fmt(x.health)}</b></div><div>PIT do zapłaty<br><b>${fmt(x.pitDue)}</b></div><div>Zarobek netto<br><span class="money">${fmt(x.net)}</span></div><div>VAT należny<br><b>${fmt(x.vatSales)}</b></div><div>VAT naliczony<br><b>${fmt(x.vatCost)}</b></div><div>VAT do zapłaty<br><b>${fmt(x.vatDue)}</b></div></div>`}
+financeForm.onsubmit=async e=>{e.preventDefault();let o=Object.fromEntries(new FormData(financeForm));o.id=o.id||uid();await put('finances',o);financeDlg.close();await refresh()}
+function setupFinanceYears(){let years=[...new Set([...finances,...jobs].map(f=>(f.date||'').slice(0,4)).filter(Boolean))].sort().reverse();let y=new Date().getFullYear().toString();if(!years.includes(y))years.unshift(y);let cur=financeYear.value||y;financeYear.innerHTML=years.map(x=>`<option ${x===cur?'selected':''}>${x}</option>`).join('')}
+function renderFinance(){let y=financeYear.value||new Date().getFullYear().toString(),m=financeMonth.value||'',prefix=y+(m?'-'+m:'');let a=finances.filter(f=>(f.date||'').startsWith(prefix)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));let completedJobs=jobs.filter(j=>(j.date||'').startsWith(prefix)&&isDoneStatus(j.status)&&!isCancelledStatus(j.status));let signed=j=>Number(j.profitLoss!==undefined?j.profitLoss:j.cost||0);let installResult=completedJobs.filter(j=>j.type==='Instalacja').reduce((z,j)=>z+signed(j),0);let serviceResult=completedJobs.filter(j=>j.type==='Serwis').reduce((z,j)=>z+signed(j),0);let reviewResult=completedJobs.filter(j=>j.type==='Przegląd').reduce((z,j)=>z+signed(j),0);let legacy=a.reduce((z,f)=>{let x=calcFinance(f);z+=x.net;return z},0);let installIncome=legacy+installResult,total=installIncome+serviceResult+reviewResult;fInstallIncome.textContent=fmt(installIncome);fServiceResult.textContent=fmt(serviceResult);fReviewResult.textContent=fmt(reviewResult);fNet.textContent=fmt(total);let listed=completedJobs.filter(j=>signed(j)!==0);jobCostSummary.innerHTML=listed.length?`<div class="tablewrap"><table><thead><tr><th>Data</th><th>Rodzaj</th><th>Klient</th><th>Urządzenie</th><th>Status</th><th>Dochód / strata</th></tr></thead><tbody>${listed.sort((a,b)=>(b.date||'').localeCompare(a.date||'')).map(j=>{let v=signed(j);return `<tr><td data-label="Data">${E(j.date)}</td><td data-label="Rodzaj">${E(j.type)}</td><td data-label="Klient">${E(cname(j.clientId))}</td><td data-label="Urządzenie">${E(dname(j.deviceId))}</td><td data-label="Status">${E(j.status)}</td><td data-label="Dochód / strata"><b>${v>0?'+':''}${fmt(v)}</b></td></tr>`}).join('')}</tbody></table></div>`:'<span class="muted">Brak wykonanych i rozliczonych zadań w tym okresie.</span>';financeRows.innerHTML=a.map(f=>{let x=calcFinance(f);return `<tr><td data-label="Data">${E(f.date)}</td><td data-label="Klient">${E(cname(f.clientId))}</td><td data-label="Urządzenie">${E(dname(f.deviceId))}</td><td data-label="Faktura">${fmt(f.gross)}</td><td data-label="Koszty">${fmt(f.costGross)}</td><td data-label="Koszty pomocnika">${fmt(f.labor)}</td><td data-label="Zarobek netto"><b>${fmt(x.net)}</b></td><td data-label="VAT">${fmt(x.vatDue)}</td><td data-label="Akcje"><button onclick="editFinance('${f.id}')">Edytuj</button> <button class="danger" onclick="delItem('finances','${f.id}')">Usuń</button></td></tr>`}).join('')||'<tr><td>Brak starszych rozliczeń dla wybranego okresu.</td></tr>'}
+
+
+function currentJobCalendarData(){
+ let o=Object.fromEntries(new FormData(jobForm)),c=clients.find(x=>x.id==o.clientId),d=devices.find(x=>x.id==o.deviceId);
+ let title=`MULTISYSTEMS — ${o.type||'Zadanie'}${c?.name?' — '+c.name:''}`;
+ let desc=[o.description||'',d?('Urządzenie: '+dname(d.id)):'',c?.phone?('Telefon: '+c.phone):''].filter(Boolean).join('\n');
+ let loc=[c?.address,c?.city].filter(Boolean).join(', ');
+ return {j:o,c,title,desc,loc}
+}
+function openGoogleCalendarData(x){let date=x.j.date||new Date().toISOString().slice(0,10),a=date.replaceAll('-',''),dt=new Date(date+'T12:00:00');dt.setDate(dt.getDate()+1);let b=dt.toISOString().slice(0,10).replaceAll('-','');window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(x.title)+'&dates='+a+'/'+b+'&details='+encodeURIComponent(x.desc)+'&location='+encodeURIComponent(x.loc),'_blank')}
+function openOutlookCalendarData(x){let d=x.j.date||new Date().toISOString().slice(0,10),a=getAppSettings(),st=a.startTime||'08:00',sd=new Date(d+'T'+st+':00'),ed=new Date(sd.getTime()+Number(a.duration||120)*60000),end=d+'T'+String(ed.getHours()).padStart(2,'0')+':'+String(ed.getMinutes()).padStart(2,'0')+':00';window.open('https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject='+encodeURIComponent(x.title)+'&startdt='+encodeURIComponent(d+'T'+st+':00')+'&enddt='+encodeURIComponent(end)+'&body='+encodeURIComponent(x.desc)+'&location='+encodeURIComponent(x.loc),'_blank')}
+function addCurrentJobGoogle(){openGoogleCalendarData(currentJobCalendarData())}
+function addCurrentJobOutlook(){openOutlookCalendarData(currentJobCalendarData())}
+
+function jobCalendarData(id){let j=jobs.find(x=>x.id==id);if(!j)return null;let c=clients.find(x=>x.id==j.clientId),d=devices.find(x=>x.id==j.deviceId);return{j,c,title:`MULTISYSTEMS — ${j.type}${c?.name?' — '+c.name:''}`,desc:[j.description||'',d?('Urządzenie: '+dname(d.id)):'',c?.phone?('Telefon: '+c.phone):''].filter(Boolean).join('\n'),loc:[c?.address,c?.city].filter(Boolean).join(', ')}}
+function addGoogleCalendar(id){let x=jobCalendarData(id);if(!x)return;let a=String(x.j.date||'').replaceAll('-',''),dt=new Date((x.j.date||new Date().toISOString().slice(0,10))+'T12:00:00');dt.setDate(dt.getDate()+1);let b=dt.toISOString().slice(0,10).replaceAll('-','');window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(x.title)+'&dates='+a+'/'+b+'&details='+encodeURIComponent(x.desc)+'&location='+encodeURIComponent(x.loc),'_blank')}
+function addOutlookCalendar(id){let x=jobCalendarData(id);if(!x)return;let d=x.j.date||new Date().toISOString().slice(0,10);window.open('https://outlook.office.com/calendar/0/deeplink/compose?path=/calendar/action/compose&rru=addevent&subject='+encodeURIComponent(x.title)+'&startdt='+encodeURIComponent(d+'T08:00:00')+'&enddt='+encodeURIComponent(d+'T10:00:00')+'&body='+encodeURIComponent(x.desc)+'&location='+encodeURIComponent(x.loc),'_blank')}
+function saveCloudSettings(){localStorage.setItem('ms_google_client_id',googleClientId.value.trim());localStorage.setItem('ms_ms_client_id',msClientId.value.trim());localStorage.setItem('ms_ms_redirect',msRedirectUri.value.trim());alert('Ustawienia integracji zapisane lokalnie.')}
+function loadCloudSettings(){let g=document.getElementById('googleClientId'),m=document.getElementById('msClientId'),r=document.getElementById('msRedirectUri');if(g)g.value=localStorage.getItem('ms_google_client_id')||'';if(m)m.value=localStorage.getItem('ms_ms_client_id')||'';if(r)r.value=localStorage.getItem('ms_ms_redirect')||''}
+function cloudBackupInfo(name){if(!/^https?:/.test(location.protocol))return alert(name+': aplikacja jest obecnie otwierana jako lokalny plik. Pełne logowanie i automatyczny zapis wymagają wersji HTTPS/PWA. Ustawienia Client ID możesz już zapisać tutaj.');alert(name+': konfiguracja OAuth jest gotowa do następnego etapu po podaniu Client ID.')}
+
+
+function financeReportData(){
+ let y=financeYear.value||new Date().getFullYear().toString(),m=financeMonth.value||'',prefix=y+(m?'-'+m:'');
+ let rows=jobs.filter(j=>(j.date||'').startsWith(prefix)&&isDoneStatus(j.status)&&!isCancelledStatus(j.status)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+ return {y,m,rows,total:rows.reduce((z,j)=>z+Number(j.profitLoss||0),0)}
+}
+function reportPeriodName(x){let mn=['','Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];return x.m?mn[Number(x.m)]+' '+x.y:'Rok '+x.y}
+function financeReportRows(x){return x.rows.map(j=>`<tr><td>${E(j.date)}</td><td>${E(j.type)}</td><td>${E(cname(j.clientId))}</td><td>${E(dname(j.deviceId))}</td><td>${E(j.invoiceMode==='0'?'Bez faktury':'VAT '+j.invoiceMode+'%')}</td><td>${E(j.amountMode==='net'?'Netto':'Brutto')}</td><td>${fmt(j.jobRevenue)}</td><td>${fmt(j.jobCosts)}</td><td>${fmt(j.jobHelper)}</td><td><b>${fmt(j.profitLoss)}</b></td></tr>`).join('')}
+function generateFinancePDF(){
+ let x=financeReportData(),company=E(getAppSettings().companyName||'MULTISYSTEMS'),w=window.open('','_blank');if(!w)return alert('Przeglądarka zablokowała nowe okno.');
+ w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Raport ${company}</title><style>body{font-family:Arial;padding:28px;color:#222}h1{margin:0;color:#9b7200}.sub{margin:6px 0 24px;color:#666}table{width:100%;border-collapse:collapse;font-size:11px}th{background:#eee;text-align:left}th,td{padding:7px;border:1px solid #ccc}tfoot td{font-weight:bold;font-size:13px}@media print{button{display:none}}</style></head><body><h1>${company}</h1><div class="sub">Raport finansowy — ${reportPeriodName(x)}</div><table><thead><tr><th>Data</th><th>Rodzaj</th><th>Klient</th><th>Urządzenie</th><th>Rozliczenie</th><th>Kwoty</th><th>Przychód</th><th>Koszty</th><th>Pomocnik</th><th>Dochód / strata</th></tr></thead><tbody>${financeReportRows(x)}</tbody><tfoot><tr><td colspan="9">Wynik</td><td>${fmt(x.total)}</td></tr></tfoot></table><p>Wygenerowano: ${new Date().toLocaleString('pl-PL')}</p><button onclick="window.print()">Drukuj / Zapisz jako PDF</button></body></html>`);w.document.close();setTimeout(()=>w.print(),400)
+}
+function generateFinanceExcel(){
+ let x=financeReportData(),sep=';',lines=[['Data','Rodzaj','Klient','Urządzenie','Rozliczenie','Tryb kwot','Przychód','Koszty','Koszty pomocnika','Dochód / strata']];
+ x.rows.forEach(j=>lines.push([j.date,j.type,cname(j.clientId),dname(j.deviceId),j.invoiceMode==='0'?'Bez faktury':'VAT '+j.invoiceMode+'%',j.amountMode==='net'?'Netto':'Brutto',j.jobRevenue||0,j.jobCosts||0,j.jobHelper||0,j.profitLoss||0]));
+ lines.push(['','','','','','','','','WYNIK',x.total]);
+ let esc=v=>'"'+String(v??'').replaceAll('"','""')+'"',csv='\ufeff'+lines.map(r=>r.map(esc).join(sep)).join('\r\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(getAppSettings().companyName||'MULTISYSTEMS').replace(/[\\/:*?\"<>|]/g,'_')+'_raport_'+x.y+(x.m?'_'+x.m:'')+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)
+}
+
+function exportDB(){let d={version:3,exportedAt:new Date().toISOString(),clients,devices,jobs,finances};let b=new Blob([JSON.stringify(d)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='MULTISYSTEMS_backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+async function importDB(f){if(!f)return;try{let x=JSON.parse(await f.text());if(!confirm('Zaimportować backup?'))return;for(let s of ['clients','devices','jobs','finances'])for(let o of(x[s]||[]))await put(s,o);await refresh();alert('Import zakończony.')}catch(e){alert('Nieprawidłowy backup.')}}
+loadTheme();loadAppSettings();applyCompanyBrand();init();setTimeout(()=>{loadCloudSettings();loadTheme();loadAppSettings();applyCompanyBrand();updateWeeklyBackupStatus()},300);
+</script></body></html>
